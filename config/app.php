@@ -55,7 +55,7 @@ return [
     'url' => env('APP_URL', 'http://localhost:8000'),
 
     'asset_url' => env('ASSET_URL', null),
-    
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -161,7 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        LaravelFullCalendar\FullCalendarServiceProvider::class,
+        // LaravelFullCalendar\FullCalendarServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 
 
@@ -233,7 +233,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Calendar' => LaravelFullCalendar\Facades\Calendar::class,
+        // 'Calendar' => LaravelFullCalendar\Facades\Calendar::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Image' => Intervention\Image\Facades\Image::class,
     ],
