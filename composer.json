@@ -18,7 +18,6 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
-        "maatwebsite/excel": "^3.1",
         "nao-pon/flysystem-google-drive": "~1.1",
         "nwidart/laravel-modules": "8.*",
         "rahulhaque/laravel-filepond": "^1.6",
