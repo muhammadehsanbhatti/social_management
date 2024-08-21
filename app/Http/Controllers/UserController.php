@@ -45,14 +45,157 @@ class UserController extends Controller
         return view('auth_v1.register',compact('role'));
     }
 
-    public function resetPassword()
+    public function forgotPassword()
+    {
+        return view('auth_v1.forgot-password');
+    }
+
+    public function accountResetPassword(Request $request)
+    {
+        $request_data = $request->all();
+        // if(!isset($request_data['g-recaptcha-response']) || empty($request_data['g-recaptcha-response'])){
+        //     return back()->withErrors([
+        //         'email' => 'Please check recaptcha and try again.',
+        //     ]);
+        // }
+
+        $validator = \Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            $random_hash = substr(md5(uniqid(rand(), true)), 8, 8);
+
+            $userDetail = $this->UserObj->getUser([
+                'email' => $request_data['email'],
+                'detail' => true
+            ]);
+
+            if($userDetail){
+                $response = $this->UserObj->saveUpdateUser([
+                    'update_id' => $userDetail->id,
+                    'password' => $random_hash,
+                ]);
+                if($response){
+                    saveEmailLog([
+                        'user_id' => $response->id,
+                        'email_template_id' => 5,
+                        'new_password' => $random_hash
+                    ]);
+                    \Session::flash('message', 'Your password has been changed successfully please check you email!');
+                    return redirect('/sp-login');
+                }
+            }
+        }
+    }
+
+
+
+    public function change_pass()
     {
         return view('auth_v1.reset-password');
     }
 
-    public function forgotPassword()
+    public function authorizeUser($posted_data)
     {
-        return view('auth_v1.forgot-password');
+        $email = isset($posted_data['email']) ? $posted_data['email'] : '';
+        $password = isset($posted_data['password']) ? $posted_data['password'] : '';
+
+        if (\Auth::attempt(['email' => $email, 'password' => $password])) {
+            $user = \Auth::user();
+            $response =  $user;
+
+            if (isset($posted_data['mode']) && $posted_data['mode'] == 'only_validate') {
+                return $response;
+            }
+
+            $response['token'] =  $user->createToken('MyApp')->accessToken;
+            return $response;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function reset_pass(Request $request){
+        $params = $request->all();
+        $rules = array(
+            'old_password'      => 'required',
+            // 'new_password'      => 'required|min:4',
+            'new_password'      => [
+                'required', Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
+            ],
+            'confirm_password'  => 'required|required_with:new_password|same:new_password'
+        );
+        $validator = \Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->sendError($validator->errors()->first(), ["error" => $validator->errors()->first()]);
+        }
+
+        $response = $this->authorizeUser([
+            'email' => \Auth::user()->email,
+            'password' => $params['old_password'],
+            'mode' => 'only_validate',
+        ]);
+
+        if ($params['old_password'] == $params['new_password']) {
+            $error_message['error'] = 'New and old password must be different.';
+            return $this->sendError($error_message['error'], $error_message);
+        }
+
+        if (!$response) {
+            $error_message['error'] = 'Your old password is incorrect.';
+            return $this->sendError($error_message['error'], $error_message);
+        } else {
+            $new_password = $params['confirm_password'];
+            $email = \Auth::user()->email;
+            $password = Hash::make($new_password);
+
+            \DB::update('update users set password = ? where email = ?', [$password, $email]);
+
+            // $data = [
+            //     'new_password' => $new_password,
+            //     'subject' => 'Reset Password',
+            //     'email' => $email
+            // ];
+
+            $admin['id'] = 1;
+            $admin['detail'] = true;
+            $admin_data = $this->UserObj->getUser($admin);
+
+            $user_data = User::where('email', '=', \Auth::user()->email)->first();
+            if ($admin_data) {
+
+                // this email will sent to the user who have requested to forget password
+                $email_content = EmailTemplate::getEmailMessage(['id' => 8, 'detail' => true]);
+
+                $email_data = decodeShortCodesTemplate([
+                    'subject' => $email_content->subject,
+                    'body' => $email_content->body,
+                    'email_message_id' => 8,
+                    'user_id' => $user_data->id,
+                ]);
+
+                EmailLogs::saveUpdateEmailLogs([
+                    'email_msg_id' => 8,
+                    'sender_id' => $admin_data->id,
+                    'receiver_id' => $user_data->id,
+                    'email' => $user_data->email,
+                    'subject' => $email_data['email_subject'],
+                    'email_message' => $email_data['email_body'],
+                    'send_email_after' => 1, // 1 = Daily Email
+                ]);
+            }
+        }
+            return $this->sendResponse([], 'Your password has been updated.');
     }
 
     public function logout()
@@ -433,11 +576,11 @@ class UserController extends Controller
             'password' => ['required'],
         ]);
 
-        if(!isset($request_data['g-recaptcha-response']) || empty($request_data['g-recaptcha-response'])){
-            return back()->withErrors([
-                'password' => 'Please check recaptcha and try again.',
-            ]);
-        }
+        // if(!isset($request_data['g-recaptcha-response']) || empty($request_data['g-recaptcha-response'])){
+        //     return back()->withErrors([
+        //         'password' => 'Please check recaptcha and try again.',
+        //     ]);
+        // }
 
         // $credentials['role'] = 1;
 
@@ -471,7 +614,12 @@ class UserController extends Controller
             try{
                 $latest_user = $this->UserObj->saveUpdateUser($posted_data);
 
-                $latest_user->assignRole('User');
+                if ($latest_user->role == 'Employee') {
+                    $latest_user->assignRole('Employee');
+                }
+                else{
+                    $latest_user->assignRole('User');
+                }
 
                 \Session::flash('message', 'User Register Successfully!');
 
@@ -483,46 +631,7 @@ class UserController extends Controller
         }
     }
 
-    public function accountResetPassword(Request $request)
-    {
-        $request_data = $request->all();
-        // if(!isset($request_data['g-recaptcha-response']) || empty($request_data['g-recaptcha-response'])){
-        //     return back()->withErrors([
-        //         'email' => 'Please check recaptcha and try again.',
-        //     ]);
-        // }
 
-        $validator = \Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        } else {
-            $random_hash = substr(md5(uniqid(rand(), true)), 8, 8);
-
-            $userDetail = $this->UserObj->getUser([
-                'email' => $request_data['email'],
-                'detail' => true
-            ]);
-
-            if($userDetail){
-                $response = $this->UserObj->saveUpdateUser([
-                    'update_id' => $userDetail->id,
-                    'password' => $random_hash,
-                ]);
-                if($response){
-                    saveEmailLog([
-                        'user_id' => $response->id,
-                        'email_template_id' => 5,
-                        'new_password' => $random_hash
-                    ]);
-                    \Session::flash('message', 'Your password has been changed successfully please check you email!');
-                    return redirect('/sp-login');
-                }
-            }
-        }
-    }
 
 
     public function sendNotification() {

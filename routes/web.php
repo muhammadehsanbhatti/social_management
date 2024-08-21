@@ -100,21 +100,32 @@ Route::get('/storage-link', function() {
 
 Route::get('/test', [UserController::class, 'testing']);
 // Route::get('/', [UserController::class, 'welcome']);
-Route::get('/', [UserController::class, 'login']);
 
+
+// Login
+Route::get('/', [UserController::class, 'login']);
 Route::get('/sp-login', [UserController::class, 'login'])->name('sp-login');
+Route::post('/accountLogin', [UserController::class, 'accountLogin'])->name('accountLogin');
+
+// Register
+Route::get('/register', [UserController::class, 'register'])->name('register');
+Route::post('/accountRegister', [UserController::class, 'accountRegister'])->name('accountRegister');
+Route::get('/employee/register', [UserController::class, 'employee_register'])->name('employee_register');
+
+// ForgotPassword
+Route::get('/forgot-password', [UserController::class, 'forgotPassword'])->name('forgotPassword');
+Route::post('/resetPassword', [UserController::class, 'accountResetPassword'])->name('accountResetPassword');
+
+// ChangePassword
+Route::get('/change_password', [UserController::class, 'change_pass'])->name('changePassword');
+Route::post('change_password', [UserController::class, 'reset_pass'])->name('resetPass');
+
+
 Route::get('/logout', [UserController::class, 'logout']);
 Route::get('/send_notification', [UserController::class, 'sendNotification']);
 // ->name('logout');
 
-Route::get('/register', [UserController::class, 'register'])->name('register');
-Route::get('/employee/register', [UserController::class, 'employee_register'])->name('employee_register');
-Route::get('/forgot-password', [UserController::class, 'forgotPassword'])->name('forgotPassword');
-Route::get('/reset-password', [UserController::class, 'resetPassword'])->name('resetPassword');
 
-Route::post('/accountRegister', [UserController::class, 'accountRegister'])->name('accountRegister');
-Route::post('/accountLogin', [UserController::class, 'accountLogin'])->name('accountLogin');
-Route::post('/resetPassword', [UserController::class, 'accountResetPassword'])->name('accountResetPassword');
 Route::post('/oauth-authorized/google', [UserController::class, 'oauth_authorized']);
 Route::get('/oauth-authorized/google', [UserController::class, 'oauth_authorized']);
 Route::get('/watch-video', [UserController::class, 'watch_video']);

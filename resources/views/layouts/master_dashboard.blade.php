@@ -116,7 +116,7 @@
                         <i class="ficon" data-feather="{{  isset(Auth::user()->theme_mode) && Auth::user()->theme_mode  == 'Light' ? 'moon':'sun' }}"></i>
                     </a>
                 </li>
-              
+
                 {{-- @include('layouts.notifications') --}}
 
                 <li class="nav-item dropdown dropdown-user">
@@ -146,6 +146,14 @@
                                     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                                 </svg>
                                 <span>Edit</span>
+                            </a>
+                        @endcan
+                        @can('change-password')
+                            <a class="dropdown-item" href="{{ url('change_password')}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 mr-50">
+                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                </svg>
+                                <span>Change Pass</span>
                             </a>
                         @endcan
                         <a class="dropdown-item" href="{{ url('logout') }}"><i class="mr-50" data-feather="power"></i> Logout</a>
@@ -209,7 +217,7 @@
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
 
                 <li class="{{ Request::path() == 'dashboard' ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ url('dashboard') }}"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboards">Dashboard</span></a>
-            
+
 
                 <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Apps &amp; Pages</span><i data-feather="more-horizontal"></i>
                 </li>
@@ -224,25 +232,25 @@
                     ]);
                     $request_url = Request::path();
                 @endphp
-                
+
                 @foreach ($data_arr as $key => $data_obj)
                     @php
                         $main_menu = $data_obj->where('slug', $data_obj->slug)->pluck('slug','slug');
                         $childs_menu = $data_obj->sub_menus->pluck('slug','slug');
                         $childs_count = $data_obj->sub_menus->count();
                         // $class = ($request_url == $data_obj->url) ? 'active' : '';
-                        // $slug =  str_replace_first('/', '', $data_obj->url); 
-                        $slug =  $data_obj->url; 
-                        $str_slug =  '/'.Request::path(); 
+                        // $slug =  str_replace_first('/', '', $data_obj->url);
+                        $slug =  $data_obj->url;
+                        $str_slug =  '/'.Request::path();
                         $class = (strpos($str_slug, $slug) !== false) ? 'active' : '';
                         // $class = (Request::path() == $slug ||) ? 'active' : '';
 
                         $main_menu = $main_menu->ToArray();
                         $childs_menu = $childs_menu->ToArray();
-                        $all_menu = array_merge($main_menu, $childs_menu); 
-                        // $all_menu = $childs_menu; 
+                        $all_menu = array_merge($main_menu, $childs_menu);
+                        // $all_menu = $childs_menu;
                     @endphp
-                    
+
                     @canany($all_menu)
                         <li class="{{ $class }} nav-item">
                             <a class="d-flex align-items-center" href="{{ url($data_obj->url) }}">
@@ -257,7 +265,7 @@
                             </a>
 
                             @if ($childs_count > 0 )
-                                <ul class="menu-content">                    
+                                <ul class="menu-content">
                                     @foreach ($data_obj->sub_menus as $key => $sub_menu_obj)
                                         @if ($sub_menu_obj->status == 'Published')
                                             @can($sub_menu_obj->slug)
@@ -276,7 +284,7 @@
                                         @endif
                                     @endforeach
                                 </ul>
-                            @endif  
+                            @endif
                         </li>
                     @endcan
                 @endforeach
@@ -438,7 +446,7 @@
     @endif
 
 
-   
+
     @yield('scripts')
     @yield('notificationScript')
 

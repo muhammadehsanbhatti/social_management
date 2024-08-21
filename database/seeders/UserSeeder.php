@@ -30,6 +30,7 @@ class UserSeeder extends Seeder
                             'last_name' => 'Admin',
                             'email' => 'admin@gmail.com',
                             'password' => bcrypt('12345678@w'),
+                            'role' => 'Admin',
                             'created_at' => now(),
                             'updated_at' => now(),
                         ],
@@ -38,6 +39,7 @@ class UserSeeder extends Seeder
                             'last_name' => 'User',
                             'email' => 'user@gmail.com',
                             'password' => bcrypt('12345678@w'),
+                            'role' => 'User',
                             'created_at' => now(),
                             'updated_at' => now(),
                         ],
@@ -46,6 +48,7 @@ class UserSeeder extends Seeder
                             'last_name' => 'Employee',
                             'email' => 'employee@gmail.com',
                             'password' => bcrypt('12345678@w'),
+                            'role' => 'Employee',
                             'created_at' => now(),
                             'updated_at' => now(),
                         ],
@@ -53,6 +56,7 @@ class UserSeeder extends Seeder
 
                     $permissions = [
                         'edit-profile',
+                        'change-password',
                         'user-list',
                         'user-create',
                         'user-edit',
@@ -89,14 +93,14 @@ class UserSeeder extends Seeder
 
                     $role = Role::where('name','User')->first();
                     $user = User::where('id', 2)->first();
-                    $permissions = Permission::whereIn('id',[1])->pluck('id','id')->all();
+                    $permissions = Permission::whereIn('id',[1,2])->pluck('id','id')->all();
                     // $permissions = Permission::whereIn('id',[1,2,3,4,5])->pluck('id','id')->all();
                     $role->syncPermissions($permissions);
                     $user->assignRole([$role->id]);
 
                     $role = Role::where('name','Employee')->first();
                     $user = User::where('id', 3)->first();
-                    $permissions = Permission::whereIn('id',[1])->pluck('id','id')->all();
+                    $permissions = Permission::whereIn('id',[1,2])->pluck('id','id')->all();
                     $role->syncPermissions($permissions);
                     $user->assignRole([$role->id]);
 

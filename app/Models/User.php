@@ -109,6 +109,9 @@ class User extends Authenticatable
 	    if (isset($posted_data['phone_number'])) {
             $query = $query->where('users.phone_number', $posted_data['phone_number']);
         }
+	    if (isset($posted_data['role'])) {
+            $query = $query->where('users.role', $posted_data['role']);
+        }
         if (isset($posted_data['user_status'])) {
             $query = $query->where('users.user_status', $posted_data['user_status']);
         }
@@ -263,6 +266,10 @@ class User extends Authenticatable
         }
         if (isset($posted_data['remember_token'])) {
             $data->remember_token = $posted_data['remember_token'];
+        }
+
+        if (isset($posted_data['role'])) {
+            $data->role = $posted_data['role'];
         }
         $data->save();
 

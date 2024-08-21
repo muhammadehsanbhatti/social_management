@@ -9,13 +9,11 @@
 
     </div>
 
-
     <div class="content-body">
         <!-- Dashboard Analytics Start -->
         <section id="dashboard-analytics">
             <div class="row match-height">
                 <!-- Subscribers Chart Card starts -->
-
                     @can('role-list')
                         <div class="col-lg-3 col-sm-6 col-12">
                             <div class="card">
