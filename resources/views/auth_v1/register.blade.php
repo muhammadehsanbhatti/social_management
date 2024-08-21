@@ -10,6 +10,7 @@
 
 <form class="auth-register-form mt-2" action="{{ route('accountRegister') }}" method="POST">
     @csrf
+    <input type="hidden" name="role" value="{{ $role }}"/>
     <!--
     <div class="form-group">
         <label for="user_name" class="form-label">User name</label>

@@ -36,7 +36,13 @@ class UserController extends Controller
 
     public function register()
     {
+        $role = 'User';
         return view('auth_v1.register');
+    }
+    public function employee_register()
+    {
+        $role = 'Employee';
+        return view('auth_v1.register',compact('role'));
     }
 
     public function resetPassword()
@@ -455,9 +461,6 @@ class UserController extends Controller
             'confirm_password' => 'required|required_with:password|same:password',
         );
 
-        $messages = array(
-            'phone_number.min' => 'The :attribute format is not correct (123-456-7890).'
-        );
 
         $validator = \Validator::make($request->all(), $rules);
 

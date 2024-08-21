@@ -21,6 +21,8 @@ use App\Models\SubMenu;
 // use Spatie\Permission\Models\Permission;
 use App\Models\Permission;
 use App\Models\AssignPermission;
+use App\Models\DocumentAsset;
+
 
 use DB;
 use Validator;
@@ -46,10 +48,11 @@ class Controller extends BaseController
     public $PermissionObj;
     public $AssignPermissionObj;
     public $ContactObj;
+    public $DocumentAssetObj;
 
 
     public function __construct() {
-        
+
         $this->RoleObj = new Role();
         $this->UserObj = new User();
         $this->EmailObj = new EmailLogs();
@@ -62,6 +65,7 @@ class Controller extends BaseController
         $this->SubMenuObj = new SubMenu();
         $this->PermissionObj = new Permission();
         $this->AssignPermissionObj = new AssignPermission();
+        $this->DocumentAssetObj = new DocumentAsset();
     }
 
     /**
@@ -96,7 +100,7 @@ class Controller extends BaseController
         if(!empty($errorMessages)){
             $response['records'] = $errorMessages;
         }
-        
+
         return response()->json($response, $code);
     }
 }

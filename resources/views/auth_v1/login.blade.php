@@ -55,11 +55,13 @@
     <div class="g-recaptcha brochure__form__captcha" data-sitekey="6LcYyE4iAAAAANhYvwVQtyK0WL1ZMODEppS4ZKy9"></div> --}}
     <br>
     {{-- <button class="btn btn-primary btn-block" tabindex="4">Sign in</button> --}}
-    <button tabindex="4" class="btn btn-primary btn-block g-recaptcha" 
-    data-sitekey="{{ Config::get('constants.recaptcha_sitekey') }}" 
-    data-callback='onSubmit' 
+    <button tabindex="4" class="btn btn-primary btn-block g-recaptcha"
+    data-sitekey="{{ Config::get('constants.recaptcha_sitekey') }}"
+    data-callback='onSubmit'
     data-action='submit'>Sign in</button>
-    <br><br> 
+    <br><br>
+    <a href="{{ route('employee_register') }} " class="btn btn-primary btn-block " >Register as an employee</a>
+    <br><br>
 </form>
 
 {{-- <p class="text-center mt-2">

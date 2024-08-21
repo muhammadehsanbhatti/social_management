@@ -61,23 +61,23 @@ Route::get('/storage-link', function() {
     Artisan::call("storage:link");
     return '<h1>storage link activated</h1>';
 });
-    
+
 // Route::get('/queue-work', function() {
 //     Artisan::call("queue:work");
 //     return '<h1>queue work activated</h1>';
 // });
-    
+
 // Route::get('/migration-refresh', function() {
 //     Artisan::call('migrate:refresh');
 //     return '<h1>Migration refresh successfully</h1>';
 // });
-    
+
 // Route::get('/migration-fresh', function() {
 //     Artisan::call("migrate:fresh");
 //     return '<h1>Migration fresh successfully</h1>';
 // });
-    
-// Route::get('/passport-install', function() {   
+
+// Route::get('/passport-install', function() {
 //     Artisan::call('passport:install');
 //     return '<h1>Passport install successfully</h1>';
 // });
@@ -108,6 +108,7 @@ Route::get('/send_notification', [UserController::class, 'sendNotification']);
 // ->name('logout');
 
 Route::get('/register', [UserController::class, 'register'])->name('register');
+Route::get('/employee/register', [UserController::class, 'employee_register'])->name('employee_register');
 Route::get('/forgot-password', [UserController::class, 'forgotPassword'])->name('forgotPassword');
 Route::get('/reset-password', [UserController::class, 'resetPassword'])->name('resetPassword');
 
@@ -126,7 +127,7 @@ Route::get('/oauth-response', function () {
 
 
 Route::middleware(['auth'])->group(function () {
-     
+
     Route::post('/blockUnblockUser', [UserController::class, 'blockUnblockUser']);
     Route::post('/theme_mode', [UserController::class, 'theme_layout']);
     Route::post('/notification_token', [NotificationController::class, 'get_notificatiion_token']);
@@ -137,7 +138,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/editProfile', [UserController::class, 'editProfile']);
     Route::post('export', [UserController::class, 'export_data'])->name('export_data_to_file');
 
-    //resouce routes 
+    //resouce routes
     Route::resource('role', RoleController::class);
     Route::resource('user', UserController::class);
     Route::resource('menu', MenuController::class);
