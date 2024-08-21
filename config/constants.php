@@ -3,6 +3,9 @@ return [
     'google_map_api' => '',
     'recaptcha_sitekey' => '6Ldc_u4mAAAAALwlwlxFqejAKC_5ZQpjaaW5awpF',
     'statusActiveBlock' => [
+        'Verified' => 'Verified',
+        'Unverified' => 'Unverified',
+        'Pending' => 'Pending',
         'Active' => 'Active',
         'Block' => 'Block',
     ],

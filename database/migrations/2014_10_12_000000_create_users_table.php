@@ -31,7 +31,7 @@ class CreateUsersTable extends Migration
             $table->string('profile_image')->nullable();
             $table->string('phone_number')->nullable();
             // $table->tinyInteger('user_status')->comment('1=Active, 2=Block')->default(1);
-            $table->enum('user_status', ['Active', 'Block'])->default('Active');
+            $table->enum('user_status', ['Active','Verified','Unverified','Pending','Block'])->default('Active');
             $table->enum('register_from', ['Web', 'Facebook', 'Gmail', 'Apple', 'IOS', 'Android'])->default('Web');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('email_verification_code', 10)->nullable();

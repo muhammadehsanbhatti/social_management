@@ -74,7 +74,7 @@ class User extends Authenticatable
     public static function getUser($posted_data = array())
     {
         $query = User::latest();
-        
+
         // if (!isset($posted_data['comma_separated_ids'])) {
         //     $query = $query->with('Role');
         // }
@@ -128,10 +128,21 @@ class User extends Authenticatable
             $query = $query->selectRaw("GROUP_CONCAT(id) as ids");
             $posted_data['detail'] = true;
         }
+        if (isset($posted_data['search'])) {
+            $searchTerm = $posted_data['search'];
+
+            $query = $query->where(function ($q) use ($searchTerm) {
+                $q->where('users.first_name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('users.email', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('users.phone_number', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
         // if (isset($posted_data['created_at'])) {
         //     $query = $query->where('created_at', $posted_data['created_at']);
         // }
-        
+
         $query->getQuery()->orders = null;
         if (isset($posted_data['orderBy_name']) && isset($posted_data['orderBy_value'])) {
             $query->orderBy($posted_data['orderBy_name'], $posted_data['orderBy_value']);
@@ -139,7 +150,7 @@ class User extends Authenticatable
             $query->orderBy('users.id', 'DESC');
         }
 
-        
+
         if (isset($posted_data['paginate'])) {
             $result = $query->paginate($posted_data['paginate']);
         } else {
@@ -153,7 +164,7 @@ class User extends Authenticatable
                 $result = $query->get();
             }
         }
-        
+
         if(isset($posted_data['printsql'])){
             $result = $query->toSql();
             echo '<pre>';
@@ -185,7 +196,7 @@ class User extends Authenticatable
                 return false;
             }
         }
-        
+
 
         if (isset($posted_data['first_name'])) {
             $data->first_name = $posted_data['first_name'];
@@ -254,7 +265,7 @@ class User extends Authenticatable
             $data->remember_token = $posted_data['remember_token'];
         }
         $data->save();
-        
+
         $data = User::getUser([
             'detail' => true,
             'id' => $data->id
@@ -278,7 +289,7 @@ class User extends Authenticatable
                 $data = $data->where('user_status', $where_posted_data['user_status']);
             }
         }
-        
+
         if($is_deleted){
             return $data->delete();
         }else{

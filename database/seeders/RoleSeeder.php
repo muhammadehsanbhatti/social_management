@@ -22,13 +22,6 @@ class RoleSeeder extends Seeder
             if(DB::table('roles')->count() == 0){
 
                 DB::table('roles')->insert([
-
-                    [
-                        'name' => 'Super Admin',
-                        'guard_name' => 'web',
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ],
                     [
                         'name' => 'Admin',
                         'guard_name' => 'web',
@@ -40,10 +33,16 @@ class RoleSeeder extends Seeder
                         'guard_name' => 'web',
                         'created_at' => now(),
                         'updated_at' => now(),
+                    ],
+                    [
+                        'name' => 'Employee',
+                        'guard_name' => 'web',
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]
 
                 ]);
-                
+
             } else { echo "[Role Table is not empty]\n"; }
 
         }catch(Exception $e) {

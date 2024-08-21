@@ -12,7 +12,7 @@
 
 <div class="content-wrapper">
     <div class="content-header row">
-        
+
     </div>
     <div class="content-body">
         <section id="multiple-column-form">
@@ -33,14 +33,14 @@
                             @if (isset($data->id))
                                 <form class="form" action="{{ route('user.update', $data->id) }}" method="post" enctype="multipart/form-data">
                                 @method('PUT')
-                                
+
                             @else
                                 <form class="form" action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
-                                
+
                             @endif
                                 @csrf
                                 <div class="row">
-                                        
+
                                     <div class="col-md-4 col-12">
                                         <div class="form-group">
                                             <label for="first_name">First Name</label>
@@ -124,7 +124,7 @@
 
                                     @if (!isset($data->user_role) && isset($data->id))
                                     @else
-                                    {{-- @if (Auth::user()->hasRole('Super Admin') && isset($data->id)) --}}
+                                    {{-- @if (Auth::user()->hasRole('Admin') && isset($data->id)) --}}
                                     <div class="col-md-4 col-12">
                                         <div class="form-group">
                                             <label for="user_role">User Role</label>
@@ -133,7 +133,7 @@
                                                 @if (isset($data['roles']) && count($data['roles'])>0)
                                                     @foreach ($data['roles'] as $item)
 
-                                                        @if ( $item['name'] == 'Super Admin' )
+                                                        @if ( $item['name'] == 'Admin' )
                                                             @continue
                                                         @endif
                                                         <option {{ old('user_role') == $item['name'] || (isset($data->user_role) && $data->user_role==$item['name'])? 'selected': '' }} value="{{ $item['name'] }}">{{ $item['name'] }}</option>
@@ -148,7 +148,7 @@
                                         </div>
                                     </div>
                                     @endif
-                                        
+
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary mr-1 waves-effect waves-float waves-light">{{ isset($data->id)? 'Update':'Add' }}</button>
                                         <button type="reset" class="btn btn-outline-secondary waves-effect">Reset</button>

@@ -24,14 +24,7 @@ class UserSeeder extends Seeder
             try{
                 if(DB::table('users')->count() == 0){
                     DB::table('users')->insert([
-                        [
-                            'first_name' => 'Super',
-                            'last_name' => 'Admin',
-                            'email' => 'superadmin@gmail.com',
-                            'password' => bcrypt('12345678@w'),
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ],
+
                         [
                             'first_name' => 'Main',
                             'last_name' => 'Admin',
@@ -44,6 +37,14 @@ class UserSeeder extends Seeder
                             'first_name' => 'Sample',
                             'last_name' => 'User',
                             'email' => 'user@gmail.com',
+                            'password' => bcrypt('12345678@w'),
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
+                        [
+                            'first_name' => 'Sample',
+                            'last_name' => 'Employee',
+                            'email' => 'employee@gmail.com',
                             'password' => bcrypt('12345678@w'),
                             'created_at' => now(),
                             'updated_at' => now(),
@@ -75,24 +76,25 @@ class UserSeeder extends Seeder
                         'sub-menu-delete',
                         'assign-permission'
                     ];
-                    
+
                     foreach ($permissions as $permission) {
                          Permission::create(['name' => $permission, 'guard_name' => 'web']);
                     }
 
-                    $role = Role::where('name','Super Admin')->first();
+                    $role = Role::where('name','Admin')->first();
                     $user = User::where('id', 1)->first();
                     $permissions = Permission::pluck('id','id')->all();
                     $role->syncPermissions($permissions);
                     $user->assignRole([$role->id]);
 
-                    $role = Role::where('name','Admin')->first();
+                    $role = Role::where('name','User')->first();
                     $user = User::where('id', 2)->first();
-                    $permissions = Permission::whereIn('id',[1,2,3,4,5])->pluck('id','id')->all();
+                    $permissions = Permission::whereIn('id',[1])->pluck('id','id')->all();
+                    // $permissions = Permission::whereIn('id',[1,2,3,4,5])->pluck('id','id')->all();
                     $role->syncPermissions($permissions);
                     $user->assignRole([$role->id]);
 
-                    $role = Role::where('name','User')->first();
+                    $role = Role::where('name','Employee')->first();
                     $user = User::where('id', 3)->first();
                     $permissions = Permission::whereIn('id',[1])->pluck('id','id')->all();
                     $role->syncPermissions($permissions);
@@ -103,6 +105,6 @@ class UserSeeder extends Seeder
             }catch(Exception $e) {
                 echo $e->getMessage();
             }
-            
+
     }
 }

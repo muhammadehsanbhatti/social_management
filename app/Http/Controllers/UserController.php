@@ -23,7 +23,7 @@ class UserController extends Controller
     public function testing() {
         echo '<pre>';print_r('testing');'</pre>';exit;
     }
-    
+
     public function welcome()
     {
         return view('welcome');
@@ -52,7 +52,7 @@ class UserController extends Controller
     public function logout()
     {
         if(\Auth::check()){
-            
+
             $posted_data['device_id'] = \Session::getId();
             $posted_data['user_id'] = \Auth::user()->id;
             $posted_data['detail'] = true;
@@ -65,7 +65,7 @@ class UserController extends Controller
         }
         return redirect('/sp-login');
     }
-    
+
 
     public function dashboard(Request $request)
     {
@@ -150,7 +150,7 @@ class UserController extends Controller
         $posted_data['orderBy_name'] = 'name';
         $posted_data['orderBy_value'] = 'Asc';
         $data['roles'] = $this->RoleObj->getRoles($posted_data);
-        
+
         return view('user.add',compact('data'));
     }
 
@@ -173,7 +173,7 @@ class UserController extends Controller
             'user_role' => 'required',
             // 'profile_image' => 'required',
         );
-        
+
         $messages = array(
             'phone_number.min' => 'The :attribute format is not correct (123-456-7890).'
         );
@@ -197,7 +197,7 @@ class UserController extends Controller
                         $imageData['uploadfileObj'] = $request->file('profile_image');
                         $imageData['fileObj'] = \Image::make($request->file('profile_image')->getRealPath());
                         $imageData['folderName'] = 'profile_image';
-                        
+
                         $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
                         $posted_data['profile_image'] = $uploadAssetRes;
                         if(!$uploadAssetRes){
@@ -211,9 +211,9 @@ class UserController extends Controller
                         ])->withInput();
                     }
                 }
-                
+
                 $latest_user = $this->UserObj->saveUpdateUser($posted_data);
-                
+
                 $latest_user->assignRole($posted_data['user_role']);
 
                 \Session::flash('message', 'User Register Successfully!');
@@ -264,20 +264,20 @@ class UserController extends Controller
         $posted_data['id'] = $id;
         $posted_data['detail'] = true;
         $data = $this->UserObj->getUser($posted_data);
- 
+
         $posted_data = array();
         $posted_data['orderBy_name'] = 'name';
         $posted_data['orderBy_value'] = 'Asc';
         $data['roles'] = $this->RoleObj->getRoles($posted_data);
         $data['user_role'] = count($data->getRoleNames()) > 0 ? $data->getRoleNames()[0] : '';
-        
+
         return view('user.add',compact('data'));
     }
 
     public function editProfile()
     {
         $id = \Auth::user()->id;
-        
+
         $posted_data = array();
         $posted_data['id'] = $id;
         $posted_data['detail'] = true;
@@ -301,7 +301,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updated_data = $request->all(); 
+        $updated_data = $request->all();
         $updated_data['update_id'] = $id;
         $rules = array(
             'update_id' => 'required|exists:users,id',
@@ -313,14 +313,14 @@ class UserController extends Controller
             'first_name' => 'required',
             // 'user_role' => 'required'
         );
-        
+
         $messages = array(
             'phone_number.min' => 'The :attribute format is not correct (123-456-7890).'
         );
 
         $validator = \Validator::make($updated_data, $rules, $messages);
 
-        if ($validator->fails()) {            
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
 
@@ -343,7 +343,7 @@ class UserController extends Controller
                         $imageData['uploadfileObj'] = $request->file('profile_image');
                         $imageData['fileObj'] = \Image::make($request->file('profile_image')->getRealPath());
                         $imageData['folderName'] = 'profile_image';
-                        
+
                         $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
                         $updated_data['profile_image'] = $uploadAssetRes;
                         if(!$uploadAssetRes){
@@ -354,7 +354,7 @@ class UserController extends Controller
                         $imageData = array();
                         $imageData['imagePath'] = $user_detail->profile_image;
                         unlinkUploadedAssets($imageData);
-                        
+
                     }else{
                         return back()->withErrors([
                             'profile_image' => 'The Profile image format is not correct you can only upload (jpg, jpeg, png).',
@@ -383,8 +383,8 @@ class UserController extends Controller
      */
     public function blockUnblockUser(Request $request)
     {
-        $posted_data = $request->all(); 
-        
+        $posted_data = $request->all();
+
         $rules = array(
             'update_id' => 'required|exists:users,id',
             'user_status' => 'required'
@@ -395,7 +395,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        
+
         $this->UserObj->saveUpdateUser($posted_data);
 
         \Session::flash('message', 'User status updated successfully!');
@@ -413,10 +413,10 @@ class UserController extends Controller
         unlinkUploadedAssets([
             'imagePath' => $user->profile_image
         ]);
-        $user->delete(); 
+        $user->delete();
         \Session::flash('message', 'User deleted successfully!');
         return redirect('/user');
-      
+
     }
 
     public function accountLogin(Request $request)
@@ -424,7 +424,7 @@ class UserController extends Controller
         $request_data = $request->all();
         $credentials = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'],  
+            'password' => ['required'],
         ]);
 
         if(!isset($request_data['g-recaptcha-response']) || empty($request_data['g-recaptcha-response'])){
@@ -454,7 +454,7 @@ class UserController extends Controller
             'password' => 'required|min:6',
             'confirm_password' => 'required|required_with:password|same:password',
         );
-        
+
         $messages = array(
             'phone_number.min' => 'The :attribute format is not correct (123-456-7890).'
         );
@@ -465,9 +465,9 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
 
-            try{                
+            try{
                 $latest_user = $this->UserObj->saveUpdateUser($posted_data);
-                
+
                 $latest_user->assignRole('User');
 
                 \Session::flash('message', 'User Register Successfully!');
@@ -479,15 +479,15 @@ class UserController extends Controller
             return redirect('/sp-login');
         }
     }
-    
+
     public function accountResetPassword(Request $request)
     {
         $request_data = $request->all();
-        if(!isset($request_data['g-recaptcha-response']) || empty($request_data['g-recaptcha-response'])){
-            return back()->withErrors([
-                'email' => 'Please check recaptcha and try again.',
-            ]);
-        }
+        // if(!isset($request_data['g-recaptcha-response']) || empty($request_data['g-recaptcha-response'])){
+        //     return back()->withErrors([
+        //         'email' => 'Please check recaptcha and try again.',
+        //     ]);
+        // }
 
         $validator = \Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
@@ -496,38 +496,36 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
-            $random_hash = substr(md5(uniqid(rand(), true)), 10, 10); 
-            $email = $request_data['email'];
-            $password = \Hash::make($random_hash);
+            $random_hash = substr(md5(uniqid(rand(), true)), 8, 8);
 
-            // $userObj = new user();
-            // $posted_data['email'] = $email;
-            // $posted_data['password'] = $password;
-            // $userObj->updateUser($posted_data);
+            $userDetail = $this->UserObj->getUser([
+                'email' => $request_data['email'],
+                'detail' => true
+            ]);
 
-            \DB::update('update users set password = ? where email = ?',[$password,$email]);
-
-            $data = [
-                'new_password' => $random_hash,
-                'subject' => 'Reset Password',
-                'email' => $email
-            ];
-
-            \Mail::send('emails.reset_password', $data, function($message) use ($data) {
-                $message->to($data['email'])
-                ->subject($data['subject']);
-            });
-            \Session::flash('message', 'Your password has been changed successfully please check you email!');
-            return redirect('/sp-login');
-
+            if($userDetail){
+                $response = $this->UserObj->saveUpdateUser([
+                    'update_id' => $userDetail->id,
+                    'password' => $random_hash,
+                ]);
+                if($response){
+                    saveEmailLog([
+                        'user_id' => $response->id,
+                        'email_template_id' => 5,
+                        'new_password' => $random_hash
+                    ]);
+                    \Session::flash('message', 'Your password has been changed successfully please check you email!');
+                    return redirect('/sp-login');
+                }
+            }
         }
     }
 
 
     public function sendNotification() {
-        
-        // echo '<pre>';print_r(Session::getId());'</pre>';exit;        
-        // $token = "fHRRYnyQyrA:APA91bFGF5j4A76XXsC4xb2canvjRPlJqlcL_yKBmgQrOu9egO3Qk9v86Lh5eSE6EQ13DC6qdE4AoxgdFsIYZvv3PtCeNdbtj6zXazZuJKGI6Doxcriw-Zdpd9QnigCD_mDCgz_BA5N7";  
+
+        // echo '<pre>';print_r(Session::getId());'</pre>';exit;
+        // $token = "fHRRYnyQyrA:APA91bFGF5j4A76XXsC4xb2canvjRPlJqlcL_yKBmgQrOu9egO3Qk9v86Lh5eSE6EQ13DC6qdE4AoxgdFsIYZvv3PtCeNdbtj6zXazZuJKGI6Doxcriw-Zdpd9QnigCD_mDCgz_BA5N7";
 
         $token = "fBvzndxKvpE:APA91bEc2l-37uRiTcYRulz3vVL63KtqmtwP5Tlm4E8hWvKUVAvfRMHjqb_ony4nHDNxuxmDjbmoPzDcmog2cX5zwL-vCf_CA0bdw8en7mVzdpCOUZeQb8Ne9HVr45LGLu3Nulees_V2";
         $from  = "AAAA1x62L-A:APA91bHPEZuPTTVn8tWhggUur4h2_k92s4cRWIu5L9lkRgS2pHtYJKMgCIkg4UcIMui1lWcXRGStyKxjIgrlH7KXefS0CkSS8tlrR0yDWiNRUkeYsNuivIgnV2rgep6QCmQL75-QpBTd";
@@ -551,7 +549,7 @@ class UserController extends Controller
                     'Authorization: key=' . $from,
                     'Content-Type: application/json'
                 );
-        //#Send Reponse To FireBase Server 
+        //#Send Reponse To FireBase Server
         $ch = curl_init();
         curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
         curl_setopt( $ch,CURLOPT_POST, true );
@@ -566,7 +564,7 @@ class UserController extends Controller
     }
 
 
-    public function export_data(Request $request) 
+    public function export_data(Request $request)
     {
         $requested_data = $request->all();
 

@@ -49,8 +49,13 @@ class ShortCodeSeeder extends Seeder
                             'title' => '[otp_code]',
                             'created_at' => now(),
                             'updated_at' => now(),
+                        ],
+                        [
+                            'title' => '[new_password]',
+                            'created_at' => now(),
+                            'updated_at' => now(),
                         ]
-                        
+
 
                     ]);
                 } else { echo "<br>[Short Code Table is not empty] "; }
@@ -58,6 +63,6 @@ class ShortCodeSeeder extends Seeder
             }catch(Exception $e) {
                 echo $e->getMessage();
             }
-            
+
     }
 }

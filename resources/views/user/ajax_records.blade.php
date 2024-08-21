@@ -16,7 +16,7 @@
         <tbody>
             @php $any_permission_found = false; @endphp
             @foreach ($data['users'] as $key => $item)
-                @if ( $item->hasRole('Super Admin') )
+                @if ( $item->hasRole('Admin') )
                     @continue
                 @endif
                 @php
@@ -35,7 +35,7 @@
                             <span class="avatar-color">
                                 <a data-fancybox="demo" data-src="{{ is_image_exist($item->profile_image) }}">
                                     <img title="{{ $item->name }}" src="{{ is_image_exist($item->profile_image) }}" height="100">
-                                    
+
                                     @if(Cache::has('user-is-online' . $item->id))
                                         <span class="avatar-status-online"></span>
                                     @else
@@ -43,7 +43,7 @@
                                     @endif
                                 </a>
                             </span>
-                        
+
                         </div>
                     </td>
 
@@ -57,7 +57,7 @@
 
                     <td>{{ $item->user_status }}</td>
                     <td>{{ date('M d, Y H:i A', strtotime($item->created_at)) }}</td>
-                    
+
                     <td>
                         @canany(['user-edit', 'user-delete', 'user-status'])
                         <div class="dropdown">
@@ -72,25 +72,25 @@
                                     @method('POST')
                                     @csrf
                                         @if ( $item->user_status == 'Active' )
-                                        
+
                                             <input type="hidden" name="update_id" value="{{$item->id}}">
                                             <input type="hidden" name="user_status" value="2">
-                                            
+
                                             <button type="submit" class="dropdown-item"  style="width:100%" id="block_user">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-x mr-50"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg>
                                                 <span>Block</span>
                                             </button>
-                                                                                        
+
                                         @else
-                                        
+
                                             <input type="hidden" name="update_id" value="{{$item->id}}">
                                             <input type="hidden" name="user_status" value="1">
-                                            
+
                                             <button type="submit" class="dropdown-item"  style="width:100%" id="block_user">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check mr-50"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
                                                 <span>Unblock</span>
                                             </button>
-                                        
+
                                         @endif
                                     </form>
                                     @endcan
@@ -101,7 +101,7 @@
                                         <span>Edit</span>
                                     </a>
                                     @endcan
-                                    
+
                                     @can('user-delete')
                                     <form action="{{ url('user/'.$item['id']) }}" method="post">
                                         @method('delete')
@@ -129,7 +129,7 @@
             @endforeach
         </tbody>
     </table>
-    
+
     <div class="pagination_links">
         {{-- {!! $data['users']->links() !!} --}}
         @if (isset($data['users']) && count($data['users'])>0)

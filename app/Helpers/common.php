@@ -1,4 +1,4 @@
-<?php 
+<?php
 use App\Models\User;
 use Laravel\Ui\Presets\Vue;
 
@@ -12,14 +12,14 @@ if (! function_exists('is_image_exist')) {
             $base_url = url('/');
         else
             $base_url = url('/').'/public';
-      
+
         $asset_url = $base_url.'/app-assets/images/default-assets/'.$default_asset;
 
         $storagePath = '';
         if($inStorage){
             $storagePath = 'storage/';
         }
-        
+
 
         if($image_path == '' || is_null($image_path)){
             return $asset_url;
@@ -32,7 +32,7 @@ if (! function_exists('is_image_exist')) {
         }
     }
 }
- 
+
 
 if (! function_exists('upload_files_to_storage')) {
     function upload_files_to_storage($request, $file_param, $path)
@@ -56,7 +56,7 @@ if (! function_exists('upload_files_to_storage')) {
             return $response = array(
                 'action'        => false,
                 'message'       => 'Something went wrong during uploading.'
-            );    
+            );
     }
 }
 
@@ -73,7 +73,7 @@ if (! function_exists('delete_files_from_storage')) {
             else
                 return $response = array('action' => false, 'message'   => 'Requested file is not exist.', 'file' => public_path('storage').'/'.$file);
         }
-        else 
+        else
             return $response = array('action' => false, 'message'   => 'There is no file available to delete.');
     }
 }
@@ -90,31 +90,31 @@ if (! function_exists('isApiRequest')) {
 }
 
 if (! function_exists('array_flatten')) {
-    function array_flatten($array) { 
-        if (!is_array($array)) { 
-            return FALSE; 
-        } 
-        $result = array(); 
-        foreach ($array as $key => $value) { 
-            if (is_array($value)) { 
-                $result = array_merge($result, array_flatten($value)); 
-            } 
-            else { 
-                $result[$key] = $value; 
-            } 
-        } 
-        return $result; 
-    } 
+    function array_flatten($array) {
+        if (!is_array($array)) {
+            return FALSE;
+        }
+        $result = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, array_flatten($value));
+            }
+            else {
+                $result[$key] = $value;
+            }
+        }
+        return $result;
+    }
 }
 
 if (! function_exists('multidimentional_array_flatten')) {
-    function multidimentional_array_flatten($array, $key) { 
+    function multidimentional_array_flatten($array, $key) {
         $unique_ids = array_unique(array_map(
             function ($i) use ($key) {
                 return $i[$key];
             }, $array)
         );
-    
+
         return $unique_ids;
     }
 }
@@ -171,7 +171,7 @@ if (! function_exists('split_metadata_strings')) {
             $result = explode('=', $piece);
             $final_result[$result[0]] = $result[1];
         }
-    
+
         return $final_result;
     }
 }
@@ -179,18 +179,18 @@ if (! function_exists('split_metadata_strings')) {
 if (! function_exists('updateTimeSpent')) {
     function updateTimeSpent()
     {
-        
-        $last_seen = date("Y-m-d H:i:s");  
+
+        $last_seen = date("Y-m-d H:i:s");
         $login = Auth::user()->last_seen;
         if( Auth::user()->last_seen == NULL ) {
-            $login = date("Y-m-d H:i:s");   
+            $login = date("Y-m-d H:i:s");
         }
-        $logout = date("Y-m-d H:i:s"); 
+        $logout = date("Y-m-d H:i:s");
         // $login = '2022-01-28 20:38:20';
         // $logout = '2022-01-28 21:48:35';
         $time_spent = round(abs(strtotime($login) - strtotime($logout)) / 3600, 2);
         $time_spent = $time_spent + Auth::user()->time_spent;
-    
+
         // echo '<pre>';
         // print_r($time_spent);
         // exit;
@@ -237,7 +237,7 @@ if (! function_exists('time_elapsed_string')) {
 
 if (! function_exists('decodeShortCodesTemplate')) {
         function decodeShortCodesTemplate($posted_data = array()) {
-        
+
         // $email_subject = isset($posted_data['subject']) ? $posted_data['subject'] : '';
         // $email_body = isset($posted_data['body']) ? $posted_data['body'] : '';
         // $email_message_id = isset($posted_data['email_message_id']) ? $posted_data['email_message_id'] : 0;
@@ -246,12 +246,12 @@ if (! function_exists('decodeShortCodesTemplate')) {
         // $receiver_id = isset($posted_data['receiver_id']) ? $posted_data['receiver_id'] : 0;
         // $new_password = isset($posted_data['new_password']) ? $posted_data['new_password'] : '[Something went wrong with server. Please request again]';
         // $verification_code = isset($posted_data['email_verification_url']) ? $posted_data['email_verification_url'] : '[Something went wrong with server. Please request again]';
-        
+
         $EmailTemplateObj = new \App\Models\EmailTemplate;
         $ShortCodesObj = new \App\Models\ShortCode;
         $OrderObj = new \App\Models\Order;
         $InvoiceObj = new \App\Models\Invoice;
-         
+
         $received_payment =  $received_payment_via_card = 0;
         $message_id = isset($posted_data['message_id']) ? $posted_data['message_id'] : 0;
         $order_id = isset($posted_data['order_id']) ? $posted_data['order_id'] : 0;
@@ -269,7 +269,7 @@ if (! function_exists('decodeShortCodesTemplate')) {
                 'email_body' => false
             ];
         }
-        
+
         $email_subject = $emailMessageDetail->subject;
         $email_body = $emailMessageDetail->message;
 
@@ -325,15 +325,15 @@ if (! function_exists('decodeShortCodesTemplate')) {
             }
             else if ($code['title'] == '[login_url]') {
                 $search = $code['title'];
-                        
+
                 $redirect_url = url('sp-login');
                 $login_url = '<a class="text-primary" href="'.$redirect_url.'">'.$redirect_url.'</a>';
-        
+
                 $replace = $order_data ? ucwords($login_url) : $search;
             }
             else if ($code['title'] == '[invoice_link]') {
                 $search = $code['title'];
-                        
+
                 $asset_url = config('app.url').'/public/';
                 $image_url = $asset_url.@$invoice_data->invoice_file;
 
@@ -344,7 +344,7 @@ if (! function_exists('decodeShortCodesTemplate')) {
                 $email_subject = stripcslashes(str_replace($search, $replace, $email_subject));
                 $email_body = stripcslashes(str_replace($search, $replace, $email_body));
             }
-            
+
         }
         // $SettingObj = new Setting();
         return $response = [
@@ -387,7 +387,7 @@ if (! function_exists('generateRandomNumbers')) {
 
 if (! function_exists('uploadAssets')) {
     function uploadAssets($imageData, $original = false, $optimized = false, $thumbnail = false, $inStorage = true) {
-        
+
         if(isset($imageData['fileName']) && isset($imageData['uploadfileObj']) && isset($imageData['fileObj']) && isset($imageData['folderName'])){
             $fileName = $imageData['fileName'];
             $uploadfileObj = $imageData['uploadfileObj'];
@@ -425,9 +425,9 @@ if (! function_exists('uploadAssets')) {
                     $constraint->aspectRatio();
                 })->save($destinationPath.'/'.$fileName);
             }
-            
+
         }
-        
+
 
         if(isset($imagePath)){
             return $imagePath;
@@ -439,7 +439,7 @@ if (! function_exists('uploadAssets')) {
 
 if (! function_exists('unlinkUploadedAssets')) {
     function unlinkUploadedAssets($imageData, $inStorage = true) {
-        
+
         if(isset($imageData['imagePath'])){
             $imagePath = $imageData['imagePath'];
             $base_url = public_path();
@@ -448,10 +448,10 @@ if (! function_exists('unlinkUploadedAssets')) {
                 $storagePath = 'storage/';
             }
             $url = $base_url.'/'.$storagePath.''.$imagePath;
-            
+
             if (file_exists($url)) {
                 unlink($url);
-            }            
+            }
         }
         return true;
     }
@@ -485,7 +485,7 @@ if (! function_exists('saveEmailLog')) {
                 $email_body = stripcslashes(str_replace($search, $replace, $email_body));
             }
 
-    
+
             $all_codes = $shortCodesObj->getEmailShortCode();
 
             foreach ($all_codes as $key => $code ) {
@@ -501,6 +501,9 @@ if (! function_exists('saveEmailLog')) {
                 else if ($code['title'] == '[app_name]') {
                     $ss_replace = config('app.name');
                 }
+                else if ($code['title'] == '[new_password]') {
+                    $ss_replace = ucwords('<h3 class="text-primary">'.$posted_data['new_password'].'</h3>');
+                }
                 else if ($code['title'] == '[email_verification_code]') {
                     $ss_replace = $userDetail ? $userDetail->email_verification_code : $ss_search;
                 }
@@ -508,12 +511,12 @@ if (! function_exists('saveEmailLog')) {
                     $redirect_url = url('verify-email').'/'.$userDetail->verification_token;
                     $ss_replace = ucwords('<a class="text-primary" style="border-color: #7367F0 !important; background-color: #7367F0 !important; color: #fff !important; text-decoration: none; font-size: 16px; padding: 10px 15px; border-radius: 20px; text-transform: uppercase;" href="'.$redirect_url.'">Click here to Verify</a>');
                 }
-                
+
                 if(isset($ss_search) && isset($ss_replace)){
                     $email_subject = stripcslashes(str_replace($ss_search, $ss_replace, $email_subject));
                     $email_body = stripcslashes(str_replace($ss_search, $ss_replace, $email_body));
                 }
-                
+
             }
 
             if($userDetail){

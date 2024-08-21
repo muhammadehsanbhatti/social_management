@@ -6,10 +6,10 @@
 
 <div class="content-wrapper">
     <div class="content-header row">
-        
+
     </div>
-    
-    
+
+
     <div class="content-body">
         <!-- Dashboard Analytics Start -->
         <section id="dashboard-analytics">
@@ -33,14 +33,14 @@
                             </div>
                         </div>
                     @endcan
-                    
-                    @if (Auth::user()->hasRole('Super Admin'))
+
+                    @if (Auth::user()->hasRole('Admin'))
                         @if (isset($data['roles']) && count($data['roles'])>0)
                             @foreach ($data['roles'] as $key => $item)
 
 
-                                @if (Auth::user()->hasRole($item->name) || Auth::user()->hasRole('Super Admin'))
-                                    @if ( $item['name'] == 'Super Admin' )
+                                @if (Auth::user()->hasRole($item->name) || Auth::user()->hasRole('Admin'))
+                                    @if ( $item['name'] == 'Admin' )
                                         @continue
                                     @endif
                                     @php
@@ -50,7 +50,7 @@
                                                             }
                                                         )->count();
                                     @endphp
-                                        
+
                                     <div class="col-lg-3 col-sm-6 col-12">
                                         <div class="card">
                                             <div class="card-header flex-column align-items-start pb-0">
@@ -68,7 +68,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                
+
                             @endforeach
                         @endif
                     @endif
@@ -106,6 +106,66 @@
                                     </div>
                                     <h2 class="font-weight-bolder mt-1">{{ isset($data['counts']['users'])? $data['counts']['users']:0 }}</h2>
                                     <p class="card-text mb-1">Users</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-header flex-column align-items-start pb-0">
+                                    <div class="avatar bg-light-primary p-50 m-0">
+                                        <a href="javascript:void()" style="color: #7367F0 !important;">
+                                            <div class="avatar-content">
+                                                <i data-feather="user" class="font-medium-5"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <h2 class="font-weight-bolder mt-1">{{ isset($data['counts']['users'])? $data['counts']['users']:0 }}</h2>
+                                    <p class="card-text mb-1">Verified users</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-header flex-column align-items-start pb-0">
+                                    <div class="avatar bg-light-primary p-50 m-0">
+                                        <a href="javascript:void()" style="color: #7367F0 !important;">
+                                            <div class="avatar-content">
+                                                <i data-feather="user" class="font-medium-5"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <h2 class="font-weight-bolder mt-1">{{ isset($data['counts']['users'])? $data['counts']['users']:0 }}</h2>
+                                    <p class="card-text mb-1">Pending withdrawals</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-header flex-column align-items-start pb-0">
+                                    <div class="avatar bg-light-primary p-50 m-0">
+                                        <a href="javascript:void()" style="color: #7367F0 !important;">
+                                            <div class="avatar-content">
+                                                <i data-feather="user" class="font-medium-5"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <h2 class="font-weight-bolder mt-1">{{ isset($data['counts']['users'])? $data['counts']['users']:0 }}</h2>
+                                    <p class="card-text mb-1">Rejected withdrawals</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-header flex-column align-items-start pb-0">
+                                    <div class="avatar bg-light-primary p-50 m-0">
+                                        <a href="javascript:void()" style="color: #7367F0 !important;">
+                                            <div class="avatar-content">
+                                                <i data-feather="user" class="font-medium-5"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <h2 class="font-weight-bolder mt-1">{{ isset($data['counts']['users'])? $data['counts']['users']:0 }}</h2>
+                                    <p class="card-text mb-1">Approved withdrawals</p>
                                 </div>
                             </div>
                         </div>
@@ -192,7 +252,7 @@
 
     </div>
     <div class="content-body">
-       
+
             <form method="POST" id="taskForm">
                 @csrf
                 <input name="task" id="taskFltrPage" value="1" type="hidden">
@@ -206,7 +266,7 @@
                                 @foreach($data['tasks_data'] as $key => $item)
                                     <option value="{{ $item['assign_user_id'] }}">{{ $item->user->first_name }} {{ $item->user->last_name }}</option>
                                 @endforeach
-                            
+
                             </select>
                         </div>--}}
                     {{-- @endif --}}
