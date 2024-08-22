@@ -5,7 +5,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Laravel\Passport\Token;
 use App\Exports\ExportData;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Arr;
+use MikeMcLin\WpPassword\Facades\WpPassword;
 use App\Models\User;
 
 class UserController extends Controller
@@ -119,12 +121,12 @@ class UserController extends Controller
     }
 
 
-    public function reset_pass(Request $request){
-        $params = $request->all();
-        $rules = array(
-            'old_password'      => 'required',
-            // 'new_password'      => 'required|min:4',
-            'new_password'      => [
+    public function reset_pass(Request $request)
+    {
+        // Validation rules
+        $rules = [
+            'old_password' => 'required',
+            'new_password' => [
                 'required', Password::min(8)
                     ->letters()
                     ->mixedCase()
@@ -132,71 +134,43 @@ class UserController extends Controller
                     ->symbols()
                     ->uncompromised()
             ],
-            'confirm_password'  => 'required|required_with:new_password|same:new_password'
-        );
+            'confirm_password' => 'required|same:new_password',
+        ];
+
+        // Validate the input data
         $validator = \Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return $this->sendError($validator->errors()->first(), ["error" => $validator->errors()->first()]);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $response = $this->authorizeUser([
-            'email' => \Auth::user()->email,
-            'password' => $params['old_password'],
-            'mode' => 'only_validate',
+        // Check if the old password is correct
+        $user = \Auth::user();
+        if (!\Hash::check($request->old_password, $user->password)) {
+            return redirect()->back()
+                ->withErrors(['old_password' => 'Your old password is incorrect.'])
+                ->withInput();
+        }
+
+        // Check if the new password is different from the old password
+        if ($request->old_password === $request->new_password) {
+            return redirect()->back()
+                ->withErrors(['new_password' => 'New and old passwords must be different.'])
+                ->withInput();
+        }
+
+        // Update the user's password
+        $user_detail = $this->UserObj->saveUpdateUser([
+            'update_id' =>  \Auth::user()->id,
+            'password' => $request->new_password,
         ]);
-
-        if ($params['old_password'] == $params['new_password']) {
-            $error_message['error'] = 'New and old password must be different.';
-            return $this->sendError($error_message['error'], $error_message);
-        }
-
-        if (!$response) {
-            $error_message['error'] = 'Your old password is incorrect.';
-            return $this->sendError($error_message['error'], $error_message);
-        } else {
-            $new_password = $params['confirm_password'];
-            $email = \Auth::user()->email;
-            $password = Hash::make($new_password);
-
-            \DB::update('update users set password = ? where email = ?', [$password, $email]);
-
-            // $data = [
-            //     'new_password' => $new_password,
-            //     'subject' => 'Reset Password',
-            //     'email' => $email
-            // ];
-
-            $admin['id'] = 1;
-            $admin['detail'] = true;
-            $admin_data = $this->UserObj->getUser($admin);
-
-            $user_data = User::where('email', '=', \Auth::user()->email)->first();
-            if ($admin_data) {
-
-                // this email will sent to the user who have requested to forget password
-                $email_content = EmailTemplate::getEmailMessage(['id' => 8, 'detail' => true]);
-
-                $email_data = decodeShortCodesTemplate([
-                    'subject' => $email_content->subject,
-                    'body' => $email_content->body,
-                    'email_message_id' => 8,
-                    'user_id' => $user_data->id,
-                ]);
-
-                EmailLogs::saveUpdateEmailLogs([
-                    'email_msg_id' => 8,
-                    'sender_id' => $admin_data->id,
-                    'receiver_id' => $user_data->id,
-                    'email' => $user_data->email,
-                    'subject' => $email_data['email_subject'],
-                    'email_message' => $email_data['email_body'],
-                    'send_email_after' => 1, // 1 = Daily Email
-                ]);
-            }
-        }
-            return $this->sendResponse([], 'Your password has been updated.');
+        \Auth::logout();
+        \Session::flash('message', 'Your password has been updated. Please log in with your new password.');
+        return redirect('/sp-login');
     }
+
 
     public function logout()
     {
@@ -570,26 +544,46 @@ class UserController extends Controller
 
     public function accountLogin(Request $request)
     {
-        $request_data = $request->all();
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $posted_data = $request->all();
 
-        // if(!isset($request_data['g-recaptcha-response']) || empty($request_data['g-recaptcha-response'])){
-        //     return back()->withErrors([
-        //         'password' => 'Please check recaptcha and try again.',
-        //     ]);
-        // }
+        $rules = [
+            'email' => 'required|email',
+            'password' => 'required',
+        ];
 
-        // $credentials['role'] = 1;
+        $validator = \Validator::make($posted_data, $rules);
 
-        if (\Auth::attempt($credentials)) {
-            return redirect('/dashboard');
-        }else{
-            return back()->withErrors([
-                'email' => 'The provided credentials do not match our records.',
-            ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $credentials = [
+            'email' => $posted_data['email'],
+            'password' => $posted_data['password'],
+        ];
+
+        $user = $this->UserObj::whereEmail($posted_data['email'])->first();
+
+        if ($user) {
+            if ($user->email_verified_at) {
+                $password = $credentials['password'];
+                $wp_hashed_password = $user->password;
+
+                if (WpPassword::check($password, $wp_hashed_password) || $wp_hashed_password == md5($credentials['password'])) {
+                    if (\Auth::attempt($credentials)) {
+                        \Session::flash('message', 'You logged in successfully');
+                        return redirect('/dashboard');
+                    } else {
+                        return redirect()->back()->withErrors(['password' => 'Invalid password'])->withInput();
+                    }
+                } else {
+                    return redirect()->back()->withErrors(['password' => 'Invalid password'])->withInput();
+                }
+            } else {
+                return redirect()->back()->withErrors(['email' => 'Please verify your email before logging in.'])->withInput();
+            }
+        } else {
+            return redirect()->back()->withErrors(['email' => 'This account not found'])->withInput();
         }
     }
 
@@ -612,6 +606,7 @@ class UserController extends Controller
         } else {
 
             try{
+                $posted_data['verification_token'] = \Str::random(20);
                 $latest_user = $this->UserObj->saveUpdateUser($posted_data);
 
                 if ($latest_user->role == 'Employee') {
@@ -621,7 +616,17 @@ class UserController extends Controller
                     $latest_user->assignRole('User');
                 }
 
-                \Session::flash('message', 'User Register Successfully!');
+                if($latest_user){
+
+
+                    saveEmailLog([
+                        'user_id' => $latest_user->id,
+                        'email_template_id' => 4,
+                        'email_verification_link' => true
+                    ]);
+                    \Session::flash('message', 'You Register Successfully!. Kinldy check your email and verify your account');
+                    return redirect('/sp-login');
+                }
 
             } catch (Exception $e) {
                 \Session::flash('error_message', $e->getMessage());
@@ -631,6 +636,40 @@ class UserController extends Controller
         }
     }
 
+    public function verifyUserEmail($token)
+    {
+
+        $where_query = array(['verification_token', '=', isset($token) ? $token : 0]);
+        $verifyUser = User::where($where_query)->first();
+
+        if ($verifyUser) {
+            if (isset($verifyUser->verification_token) && !isset($verifyUser->email_verified_at)) {
+
+
+                $model_response = User::saveUpdateUser([
+                    'update_id' => $verifyUser->id,
+                    'verification_token' => 'NULL',
+                    'email_verified_at' => date('Y-m-d h:i:s')
+                ]);
+
+                if (!empty($model_response)) {
+                    \Session::flash('message', 'Congratulations! You email is successfully verified. Welcome to ' . config('app.name'));
+                    return redirect('/sp-login');
+                }
+            } else {
+                $email_data = [
+                    'name' => $verifyUser->name,
+                    'text_line' => 'Your email is already verified. Welcome to ' . config('app.name'),
+                ];
+            }
+        }
+        else{
+            return back()->withErrors([
+                'error' => 'This verfication code is invalid. Please contact to the customer support',
+            ]);
+        }
+
+    }
 
 
 

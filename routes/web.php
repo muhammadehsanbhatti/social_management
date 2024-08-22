@@ -111,6 +111,7 @@ Route::post('/accountLogin', [UserController::class, 'accountLogin'])->name('acc
 Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/accountRegister', [UserController::class, 'accountRegister'])->name('accountRegister');
 Route::get('/employee/register', [UserController::class, 'employee_register'])->name('employee_register');
+Route::get('verify-email/{token?}', [UserController::class, 'verifyUserEmail'])->name('email_verify');
 
 // ForgotPassword
 Route::get('/forgot-password', [UserController::class, 'forgotPassword'])->name('forgotPassword');

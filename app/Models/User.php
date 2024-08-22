@@ -267,6 +267,14 @@ class User extends Authenticatable
         if (isset($posted_data['remember_token'])) {
             $data->remember_token = $posted_data['remember_token'];
         }
+        if (isset($posted_data['verification_token'])) {
+            if ($posted_data['verification_token'] =='NULL') {
+                $data->verification_token = NULL;
+            }
+            else{
+                $data->verification_token = $posted_data['verification_token'];
+            }
+        }
 
         if (isset($posted_data['role'])) {
             $data->role = $posted_data['role'];

@@ -26,7 +26,7 @@ Route::post('register', [RegisterController::class, 'registerAccount']);
 Route::post('forgot_password', [RegisterController::class, 'forgotPassword']);
 Route::post('verify_otp', [RegisterController::class, 'verifyOtp']);
 Route::post('change_password', [RegisterController::class, 'changePassword']);
-Route::get('verify-email/{token?}', [RegisterController::class, 'verifyUserEmail'])->name('email_verify');
+// Route::get('verify-email/{token?}', [RegisterController::class, 'verifyUserEmail'])->name('email_verify');
 Route::get('logout', [RegisterController::class, 'logoutUser']);
 
 
@@ -37,7 +37,7 @@ Route::post('forgot_password', [RegisterController::class, 'forgotPassword']);
 */
 
 Route::middleware('auth:api')->group( function () {
-    
+
     // Route::post('logout', [RegisterController::class, 'logoutProfile']);
 
     Route::get('get_profile', [RegisterController::class, 'get_profile']);

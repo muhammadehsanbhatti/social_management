@@ -457,6 +457,8 @@ if (! function_exists('unlinkUploadedAssets')) {
     }
 }
 
+
+
 if (! function_exists('saveEmailLog')) {
     function saveEmailLog($posted_data = array()) {
 
@@ -485,7 +487,6 @@ if (! function_exists('saveEmailLog')) {
                 $email_body = stripcslashes(str_replace($search, $replace, $email_body));
             }
 
-
             $all_codes = $shortCodesObj->getEmailShortCode();
 
             foreach ($all_codes as $key => $code ) {
@@ -501,14 +502,13 @@ if (! function_exists('saveEmailLog')) {
                 else if ($code['title'] == '[app_name]') {
                     $ss_replace = config('app.name');
                 }
-                else if ($code['title'] == '[new_password]') {
-                    $ss_replace = ucwords('<h3 class="text-primary">'.$posted_data['new_password'].'</h3>');
-                }
                 else if ($code['title'] == '[email_verification_code]') {
                     $ss_replace = $userDetail ? $userDetail->email_verification_code : $ss_search;
                 }
                 else if ($code['title'] == '[email_verification_link]') {
+
                     $redirect_url = url('verify-email').'/'.$userDetail->verification_token;
+                    // $redirect_url = url('sp-login');
                     $ss_replace = ucwords('<a class="text-primary" style="border-color: #7367F0 !important; background-color: #7367F0 !important; color: #fff !important; text-decoration: none; font-size: 16px; padding: 10px 15px; border-radius: 20px; text-transform: uppercase;" href="'.$redirect_url.'">Click here to Verify</a>');
                 }
 
