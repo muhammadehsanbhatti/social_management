@@ -429,19 +429,17 @@ class UserController extends Controller
         $rules = array(
             'update_id' => 'required|exists:users,id',
             'phone_number' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:12',
-            'confirm_password' => 'nullable|required_with:password|same:password',
-            'password' => 'nullable|min:6',
             'email' => 'required|email|unique:users,email,'.$id.',id',
             'last_name' => 'required',
             'first_name' => 'required',
-            // 'user_role' => 'required'
+            'dob' => 'required|date|before:today',
+            'address' => 'required|regex:/(^[-0-9A-Za-z.,\/ ]+$)/',
+            'country' => 'required|regex:/(^[A-Za-z\/ ]+$)/',
+            'personal_identity' => 'required',
+            'profile_image' => 'required',
         );
 
-        $messages = array(
-            'phone_number.min' => 'The :attribute format is not correct (123-456-7890).'
-        );
-
-        $validator = \Validator::make($updated_data, $rules, $messages);
+        $validator = \Validator::make($updated_data, $rules);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -450,11 +448,7 @@ class UserController extends Controller
             try{
                 $user_detail = $this->UserObj->getUser(['id' => $id, 'detail' => true]);
 
-                if ($user_detail && isset($updated_data['user_role'])) {
-                    $pre_role = count($user_detail->getRoleNames()) > 0 ? $user_detail->getRoleNames()[0] : '';
-                    $user_detail->removeRole($pre_role);
-                    $user_detail->assignRole($updated_data['user_role']);
-                }
+
 
                 $base_url = public_path();
                 if($request->file('profile_image')) {
@@ -571,8 +565,14 @@ class UserController extends Controller
 
                 if (WpPassword::check($password, $wp_hashed_password) || $wp_hashed_password == md5($credentials['password'])) {
                     if (\Auth::attempt($credentials)) {
-                        \Session::flash('message', 'You logged in successfully');
-                        return redirect('/dashboard');
+
+                        if (\Auth::user()->profile_completion >= 90 ) {
+                            return redirect('/editProfile');
+                        }
+                        else{
+                            \Session::flash('message', 'You logged in successfully');
+                            return redirect('/dashboard');
+                        }
                     } else {
                         return redirect()->back()->withErrors(['password' => 'Invalid password'])->withInput();
                     }
@@ -607,6 +607,7 @@ class UserController extends Controller
 
             try{
                 $posted_data['verification_token'] = \Str::random(20);
+                $posted_data['profile_completion'] = 30;
                 $latest_user = $this->UserObj->saveUpdateUser($posted_data);
 
                 if ($latest_user->role == 'Employee') {
@@ -617,8 +618,6 @@ class UserController extends Controller
                 }
 
                 if($latest_user){
-
-
                     saveEmailLog([
                         'user_id' => $latest_user->id,
                         'email_template_id' => 4,

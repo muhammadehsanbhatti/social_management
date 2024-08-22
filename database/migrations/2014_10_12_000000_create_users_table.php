@@ -22,10 +22,14 @@ class CreateUsersTable extends Migration
             $table->date('dob')->nullable();
             $table->string('profile_image')->nullable();
             $table->string('phone_number')->nullable();
+             $table->string('country', 100)->nullable();
             $table->enum('user_status', ['Active','Verified','Unverified','Pending','Block'])->default('Pending');
             $table->enum('role', ['Admin','User','Employee'])->default('User');
             $table->enum('register_from', ['Web', 'Facebook', 'Gmail', 'Apple', 'IOS', 'Android'])->default('Web');
             $table->timestamp('email_verified_at')->nullable();
+            $table->integer('profile_completion')->default(0);
+            $table->longText('address')->nullable();
+            $table->string('personal_identity')->nullable();
             $table->string('email_verification_code', 10)->nullable();
             $table->enum('theme_mode', ['Light', 'Dark'])->default('Light');
             $table->double('time_spent')->default(0);
