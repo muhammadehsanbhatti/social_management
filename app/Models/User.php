@@ -109,6 +109,18 @@ class User extends Authenticatable
 	    if (isset($posted_data['phone_number'])) {
             $query = $query->where('users.phone_number', $posted_data['phone_number']);
         }
+	    if (isset($posted_data['country'])) {
+            $query = $query->where('users.country', $posted_data['country']);
+        }
+	    if (isset($posted_data['profile_completion'])) {
+            $query = $query->where('users.profile_completion', $posted_data['profile_completion']);
+        }
+	    if (isset($posted_data['address'])) {
+            $query = $query->where('users.address', $posted_data['address']);
+        }
+	    if (isset($posted_data['personal_identity'])) {
+            $query = $query->where('users.personal_identity', $posted_data['personal_identity']);
+        }
 	    if (isset($posted_data['role'])) {
             $query = $query->where('users.role', $posted_data['role']);
         }
@@ -123,6 +135,9 @@ class User extends Authenticatable
         }
         if (isset($posted_data['theme_mode'])) {
             $query = $query->where('users.theme_mode', $posted_data['theme_mode']);
+        }
+        if (isset($posted_data['description'])) {
+            $query = $query->where('users.description', $posted_data['description']);
         }
         if (isset($posted_data['login_having_thirty_minutes'])) {
             $query = $query->where('users.last_seen','<=', $posted_data['login_having_thirty_minutes']);
@@ -228,17 +243,20 @@ class User extends Authenticatable
         if (isset($posted_data['country'])) {
             $data->country = $posted_data['country'];
         }
-        if (isset($posted_data['city'])) {
-            $data->city = $posted_data['city'];
+        if (isset($posted_data['profile_completion'])) {
+            $data->profile_completion = $posted_data['profile_completion'];
         }
-        if (isset($posted_data['state'])) {
-            $data->state = $posted_data['state'];
+        if (isset($posted_data['address'])) {
+            $data->address = $posted_data['address'];
         }
-        if (isset($posted_data['latitude'])) {
-            $data->latitude = $posted_data['latitude'];
+        if (isset($posted_data['personal_identity'])) {
+            $data->personal_identity = $posted_data['personal_identity'];
         }
-        if (isset($posted_data['longitude'])) {
-            $data->longitude = $posted_data['longitude'];
+        if (isset($posted_data['description'])) {
+            $data->description = $posted_data['description'];
+        }
+        if (isset($posted_data['email_verification_code'])) {
+            $data->email_verification_code = $posted_data['email_verification_code'];
         }
         if (isset($posted_data['profile_image'])) {
             $data->profile_image = $posted_data['profile_image'];

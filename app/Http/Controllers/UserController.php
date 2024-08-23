@@ -424,29 +424,34 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $updated_data = $request->all();
-        $updated_data['update_id'] = $id;
+        $posted_data = array();
+        $posted_data = $request->all();
+        $posted_data['update_id'] = $id;
+        $user_detail = $this->UserObj->getUser(['id' => $id, 'detail' => true]);
         $rules = array(
-            'update_id' => 'required|exists:users,id',
-            'phone_number' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:12',
-            'email' => 'required|email|unique:users,email,'.$id.',id',
+            'phone_number' => 'required',
+            'email' => 'required|email|unique:users,email,' . $id,
             'last_name' => 'required',
             'first_name' => 'required',
             'dob' => 'required|date|before:today',
-            'address' => 'required|regex:/(^[-0-9A-Za-z.,\/ ]+$)/',
-            'country' => 'required|regex:/(^[A-Za-z\/ ]+$)/',
-            'personal_identity' => 'required',
-            'profile_image' => 'required',
+            'address' => 'required',
+            'country' => 'required',
+            'description' => 'required',
         );
+        if (!$user_detail->profile_image && !$request->file('profile_image')) {
+            $rules['profile_image'] = 'required|image|mimes:jpeg,png,jpg';
+        }
 
-        $validator = \Validator::make($updated_data, $rules);
+        if (!$user_detail->personal_identity && !$request->file('personal_identity')) {
+            $rules['personal_identity'] = 'required|image|mimes:jpeg,png,jpg';
+        }
+
+        $validator = \Validator::make($posted_data, $rules);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
-        } else {
-
+        }
             try{
-                $user_detail = $this->UserObj->getUser(['id' => $id, 'detail' => true]);
 
 
 
@@ -462,7 +467,7 @@ class UserController extends Controller
                         $imageData['folderName'] = 'profile_image';
 
                         $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
-                        $updated_data['profile_image'] = $uploadAssetRes;
+                        $posted_data['profile_image'] = $uploadAssetRes;
                         if(!$uploadAssetRes){
                             return back()->withErrors([
                                 'profile_image' => 'Something wrong with your image, please try again later!',
@@ -478,8 +483,38 @@ class UserController extends Controller
                         ])->withInput();
                     }
                 }
+                if($request->file('personal_identity')) {
+                    $extension = $request->personal_identity->getClientOriginalExtension();
+                    if($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png'){
+                        $imageData = array();
+                        // $imageData['fileName'] = time().'_'.$request->personal_identity->getClientOriginalName();
+                        $imageData['fileName'] = time().'_'.rand(1000000,9999999).'.'.$extension;
+                        $imageData['uploadfileObj'] = $request->file('personal_identity');
+                        $imageData['fileObj'] = \Image::make($request->file('personal_identity')->getRealPath());
+                        $imageData['folderName'] = 'personal_identity';
 
-                $this->UserObj->saveUpdateUser($updated_data);
+                        $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
+                        $posted_data['personal_identity'] = $uploadAssetRes;
+                        if(!$uploadAssetRes){
+                            return back()->withErrors([
+                                'personal_identity' => 'Something wrong with your image, please try again later!',
+                            ])->withInput();
+                        }
+                        $imageData = array();
+                        $imageData['imagePath'] = $user_detail->personal_identity;
+                        unlinkUploadedAssets($imageData);
+
+                    }else{
+                        return back()->withErrors([
+                            'personal_identity' => 'The Profile image format is not correct you can only upload (jpg, jpeg, png).',
+                        ])->withInput();
+                    }
+                }
+                if ($user_detail->profile_completion  <= 30) {
+                    $posted_data['profile_completion'] = 100;
+                }
+
+                $this->UserObj->saveUpdateUser($posted_data);
                 \Session::flash('message', 'User Update Successfully!');
                 return redirect()->back();
 
@@ -488,7 +523,7 @@ class UserController extends Controller
                 // dd("Error: ". $e->getMessage());
             }
             return redirect()->back()->withInput();
-        }
+
     }
 
     /**
@@ -566,7 +601,7 @@ class UserController extends Controller
                 if (WpPassword::check($password, $wp_hashed_password) || $wp_hashed_password == md5($credentials['password'])) {
                     if (\Auth::attempt($credentials)) {
 
-                        if (\Auth::user()->profile_completion <= 90 ) {
+                        if (\Auth::user()->profile_completion <= 100 ) {
                             return redirect('/editProfile');
                         }
                         else{

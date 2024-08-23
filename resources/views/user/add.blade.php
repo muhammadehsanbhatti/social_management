@@ -88,6 +88,19 @@
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <div class="col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label for="phone_number">Enter phone number</label>
+                                            <input value="{{old('phone_number', isset($data->phone_number)? $data->phone_number: '')}}" type="text" id="phone_number" class="form-control @error('phone_number') is-invalid @enderror" placeholder="Enter phone_number" name="phone_number">
+                                            @error('phone_number')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-4 col-12">
                                         <div class="form-group">
                                             <label for="dob">Enter dob</label>
@@ -142,10 +155,34 @@
                                             @enderror
                                         </div>
                                     </div>
+
                                     <div class="col-md-4 col-12">
                                         <div class="form-group">
-                                            <label for="description">Enter Description</label>
-                                            <textarea class="form-control @error('description') is-invalid @enderror" placeholder="Enter Description" name="description" id="description" value="{{old('description', isset($data->description)? $data->description: '')}}"></textarea>
+                                            <label for="user_status">Status</label>
+                                            <input value="{{old('user_status', isset($data->user_status)? $data->user_status: '')}}" type="text" id="user_status" class="form-control @error('user_status') is-invalid @enderror" placeholder="Enter user_status" name="user_status" disabled>
+                                            @error('user_status')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label for="address">Enter address</label>
+                                            <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Enter address" name="address" id="address" value="{{old('address', isset($data->address)? $data->address: '')}}">{!! isset($data->address)? $data->address: '' !!}</textarea>
+                                            @error('address')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-12">
+                                        <div class="form-group">
+                                            <label for="description">Enter description</label>
+                                            <textarea class="form-control @error('description') is-invalid @enderror" placeholder="Enter description" name="description" id="description" value="{{old('description', isset($data->description)? $data->description: '')}}">{!! isset($data->description)? $data->description: '' !!}</textarea>
                                             @error('description')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
