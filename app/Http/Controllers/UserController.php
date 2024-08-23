@@ -559,14 +559,14 @@ class UserController extends Controller
         $user = $this->UserObj::whereEmail($posted_data['email'])->first();
 
         if ($user) {
-            if ($user->email_verified_at) {
+            // if ($user->email_verified_at) {
                 $password = $credentials['password'];
                 $wp_hashed_password = $user->password;
 
                 if (WpPassword::check($password, $wp_hashed_password) || $wp_hashed_password == md5($credentials['password'])) {
                     if (\Auth::attempt($credentials)) {
 
-                        if (\Auth::user()->profile_completion >= 90 ) {
+                        if (\Auth::user()->profile_completion <= 90 ) {
                             return redirect('/editProfile');
                         }
                         else{
@@ -579,9 +579,9 @@ class UserController extends Controller
                 } else {
                     return redirect()->back()->withErrors(['password' => 'Invalid password'])->withInput();
                 }
-            } else {
-                return redirect()->back()->withErrors(['email' => 'Please verify your email before logging in.'])->withInput();
-            }
+            // } else {
+            //     return redirect()->back()->withErrors(['email' => 'Please verify your email before logging in.'])->withInput();
+            // }
         } else {
             return redirect()->back()->withErrors(['email' => 'This account not found'])->withInput();
         }
