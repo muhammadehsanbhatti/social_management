@@ -156,17 +156,52 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 col-12">
-                                        <div class="form-group">
-                                            <label for="user_status">Status</label>
-                                            <input value="{{old('user_status', isset($data->user_status)? $data->user_status: '')}}" type="text" id="user_status" class="form-control @error('user_status') is-invalid @enderror" placeholder="Enter user_status" name="user_status" disabled>
-                                            @error('user_status')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                                    @if (Auth::user()->hasRole('User') || (Auth::user()->hasRole('Employee')))
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="status">Status</label>
+                                                <input value="{{old('user_status', isset($data->user_status)? $data->user_status: '')}}" type="text" id="user_status" class="form-control @error('user_status') is-invalid @enderror" placeholder="Enter user_status" name="user_status" disabled>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
+
+                                    @if (\Auth::user()->id == 1  && (Auth::user()->hasRole('Admin')))
+                                        <div class="col-md-4 col-12">
+                                            <div class="form-group">
+                                                <label for="role">Role</label>
+                                                <select class="form-control @error('role') is-invalid @enderror" name="role" id="role">
+                                                    <option value=""> ---- Choose User Role ---- </option>
+                                                    <option value="User" {{  isset($data->role) && $data->role == 'User' ?'selected' : '' }}>User</option>
+                                                    <option value="Employee" {{  isset($data->role) && $data->role == 'Employee' ?'selected' : '' }}>Employee</option>
+                                                </select>
+                                                @error('role')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        @if (!isset($data->password))
+                                            <div class="col-md-4 col-12">
+                                                <div class="form-group">
+                                                    <label for="role">Password</label>
+                                                    <div class="input-group input-group-merge form-password-toggle">
+                                                        <input type="password" class="form-control  @error('password') is-invalid @enderror form-control-merge" id="password" name="password" placeholder="Enter password"  />
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    @error('password')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                    @endif
 
                                     <div class="col-md-4 col-12">
                                         <div class="form-group">

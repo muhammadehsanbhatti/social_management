@@ -110,8 +110,15 @@
                     <li class="nav-item"><a class="nav-link menu-toggle" href="javascript:void(0);"><i class="ficon" data-feather="menu"></i></a></li>
                 </ul>
             </div>
-            @if (isset(Auth::user()->user_status) == 'Pending')
-                <p style="border: 2px solid #847AE3;padding: 5px;border-radius: 6px;background-color: #847AE3;color: black;font-size: 15px;font-weight: 800;">Kindly Verify your Account</p>
+
+            @if (Auth::user() && Auth::user()->user_status == 'Pending')
+                <button class="pending_account_btn" type="button">Kindly Check Email To Verify Account</button>
+            @elseif (Auth::user() && Auth::user()->user_status == 'Verified')
+                <button class="verify_account_btn" type="button">Your Account Verified</button>
+            @elseif (Auth::user() && Auth::user()->user_status == 'Unverified')
+                <button class="unverify_account_btn" type="button">Unfortunately, Admin Not Verified You</button>
+            @elseif (Auth::user() && Auth::user()->user_status == 'Block')
+                <button class="block_account_btn" type="button">Unfortunately, Your Account is Blocked</button>
             @endif
             <ul class="nav navbar-nav align-items-center ml-auto">
                 <li class="nav-item d-none d-lg-block">

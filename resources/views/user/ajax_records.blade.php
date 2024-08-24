@@ -50,12 +50,34 @@
                     <td>{{ $item->first_name }} {{ $item->last_name }}</td>
                     <td>{{ $item->email }}</td>
                     <td>
-                        @foreach ($item->getRoleNames() as $role_key => $role_name)
-                            <span class="role-badge" style="background-color: {{ $item->hasRole('Admin')? '#7367F0':'#6e6b7b' }}">{{ $role_name }} </span>
-                        @endforeach
+                        <span class="role-badge {{ $item->role == 'Employee' ? 'role-employee' : 'role-user' }}">
+                            {{ $item->role }}
+                        </span>
                     </td>
 
-                    <td>{{ $item->user_status }}</td>
+                    <td>
+                        @php
+                            $statusClass = '';
+                            switch($item->user_status) {
+                                case 'Verified':
+                                    $statusClass = 'status-verified';
+                                    break;
+                                case 'Unverified':
+                                    $statusClass = 'status-unverified';
+                                    break;
+                                case 'Pending':
+                                    $statusClass = 'status-pending';
+                                    break;
+                                case 'Block':
+                                    $statusClass = 'status-block';
+                                    break;
+                                default:
+                                    $statusClass = 'status-unverified';
+                                    break;
+                            }
+                        @endphp
+                        <span class="status-badge {{ $statusClass }}">{{ ucfirst($item->user_status) }}</span>
+                    </td>
                     <td>{{ date('M d, Y H:i A', strtotime($item->created_at)) }}</td>
 
                     <td>

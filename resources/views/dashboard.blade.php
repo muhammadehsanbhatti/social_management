@@ -55,7 +55,7 @@
                                                 <div class="avatar bg-light-primary p-50 m-0">
                                                     <a href="javascript:void()" style="color: #7367F0 !important;">
                                                         <div class="avatar-content">
-                                                            <i data-feather="award" class="font-medium-5"></i>
+                                                            <i  data-feather="user-plus" class="font-medium-5"></i>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -79,7 +79,7 @@
                                     <div class="avatar bg-light-primary p-50 m-0">
                                         <a href="javascript:void()" style="color: #7367F0 !important;">
                                             <div class="avatar-content">
-                                                <i data-feather="lock" class="font-medium-5"></i>
+                                                <i data-feather="clipboard" class="font-medium-5"></i>
                                             </div>
                                         </a>
                                     </div>
@@ -98,7 +98,7 @@
                                     <div class="avatar bg-light-primary p-50 m-0">
                                         <a href="javascript:void()" style="color: #7367F0 !important;">
                                             <div class="avatar-content">
-                                                <i data-feather="user" class="font-medium-5"></i>
+                                                <i data-feather="users" class="font-medium-5"></i>
                                             </div>
                                         </a>
                                     </div>
@@ -113,16 +113,61 @@
                                     <div class="avatar bg-light-primary p-50 m-0">
                                         <a href="javascript:void()" style="color: #7367F0 !important;">
                                             <div class="avatar-content">
-                                                <i data-feather="user" class="font-medium-5"></i>
+                                                <i data-feather="user-check" class="font-medium-5"></i>
                                             </div>
                                         </a>
                                     </div>
-                                    <h2 class="font-weight-bolder mt-1">{{ isset($data['counts']['users'])? $data['counts']['users']:0 }}</h2>
+                                    <h2 class="font-weight-bolder mt-1">{{ isset($data['counts']['verified_users'])? $data['counts']['verified_users']:0 }}</h2>
                                     <p class="card-text mb-1">Verified users</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-header flex-column align-items-start pb-0">
+                                    <div class="avatar bg-light-primary p-50 m-0">
+                                        <a href="javascript:void()" style="color: #7367F0 !important;">
+                                            <div class="avatar-content">
+                                                <i data-feather="user-x" class="font-medium-5"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <h2 class="font-weight-bolder mt-1">{{ isset($data['counts']['unverified_users'])? $data['counts']['unverified_users']:0 }}</h2>
+                                    <p class="card-text mb-1">Unverified users</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-header flex-column align-items-start pb-0">
+                                    <div class="avatar bg-light-primary p-50 m-0">
+                                        <a href="javascript:void()" style="color: #7367F0 !important;">
+                                            <div class="avatar-content">
+                                                <i data-feather="user" class="font-medium-5"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <h2 class="font-weight-bolder mt-1">{{ isset($data['counts']['pending_users'])? $data['counts']['pending_users']:0 }}</h2>
+                                    <p class="card-text mb-1">Pending users</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="card">
+                                <div class="card-header flex-column align-items-start pb-0">
+                                    <div class="avatar bg-light-primary p-50 m-0">
+                                        <a href="javascript:void()" style="color: #7367F0 !important;">
+                                            <div class="avatar-content">
+                                                <i data-feather="user-minus" class="font-medium-5"></i>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <h2 class="font-weight-bolder mt-1">{{ isset($data['counts']['block_users'])? $data['counts']['block_users']:0 }}</h2>
+                                    <p class="card-text mb-1">Block users</p>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- <div class="col-lg-3 col-sm-6 col-12">
                             <div class="card">
                                 <div class="card-header flex-column align-items-start pb-0">
                                     <div class="avatar bg-light-primary p-50 m-0">
@@ -136,8 +181,8 @@
                                     <p class="card-text mb-1">Pending withdrawals</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
+                        </div> --}}
+                        {{-- <div class="col-lg-3 col-sm-6 col-12">
                             <div class="card">
                                 <div class="card-header flex-column align-items-start pb-0">
                                     <div class="avatar bg-light-primary p-50 m-0">
@@ -151,8 +196,8 @@
                                     <p class="card-text mb-1">Rejected withdrawals</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
+                        </div> --}}
+                        {{-- <div class="col-lg-3 col-sm-6 col-12">
                             <div class="card">
                                 <div class="card-header flex-column align-items-start pb-0">
                                     <div class="avatar bg-light-primary p-50 m-0">
@@ -166,7 +211,7 @@
                                     <p class="card-text mb-1">Approved withdrawals</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     @endcan
 
 

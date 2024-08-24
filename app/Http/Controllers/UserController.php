@@ -126,14 +126,15 @@ class UserController extends Controller
         // Validation rules
         $rules = [
             'old_password' => 'required',
-            'new_password' => [
-                'required', Password::min(8)
-                    ->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
-            ],
+            'new_password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@^&*()_+]).*$/',
+            // 'new_password' => [
+            //     'required', Password::min(8)
+            //         ->letters()
+            //         ->mixedCase()
+            //         ->numbers()
+            //         ->symbols()
+            //         ->uncompromised()
+            // ],
             'confirm_password' => 'required|same:new_password',
         ];
 
@@ -204,6 +205,32 @@ class UserController extends Controller
         ]);
 
         $data['counts']['users'] = $this->UserObj->getUser([
+            'role_in' => ['User', 'Employee'],
+            'count' => true
+        ]);
+
+        $data['counts']['verified_users'] = $this->UserObj->getUser([
+            'user_status' => 'Verified',
+            'role_in' => ['User', 'Employee'],
+            'count' => true
+        ]);
+
+
+        $data['counts']['unverified_users'] = $this->UserObj->getUser([
+            'user_status' => 'Unverified',
+            'role_in' => ['User', 'Employee'],
+            'count' => true
+        ]);
+
+        $data['counts']['pending_users'] = $this->UserObj->getUser([
+            'user_status' => 'Pending',
+            'role_in' => ['User', 'Employee'],
+            'count' => true
+        ]);
+
+        $data['counts']['block_user'] = $this->UserObj->getUser([
+            'user_status' => 'Block',
+            'role_in' => ['User', 'Employee'],
             'count' => true
         ]);
 
@@ -285,69 +312,89 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $posted_data = array();
         $posted_data = $request->all();
         $rules = array(
-            'phone_number' => 'nullable|regex:/^([0-9\s\-\+\(\)]*)$/|min:12',
-            'confirm_password' => 'required|required_with:password|same:password',
-            'password' => 'required|min:6',
-            'email' => 'required|email|unique:users',
-            'last_name' => 'required',
             'first_name' => 'required',
-            'user_role' => 'required',
-            // 'profile_image' => 'required',
+            'last_name' => 'required',
+            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@^&*()_+]).*$/',
+            'email' => 'required|email|unique:users,email',
+            'country' => 'required',
+            'phone_number' => 'required',
+            'dob' => 'required|date|before:today',
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg',
+            'personal_identity' => 'required|image|mimes:jpeg,png,jpg',
+            'role' => 'required|in:Employee,User',
+            'description' => 'required',
+            'address' => 'required',
         );
 
-        $messages = array(
-            'phone_number.min' => 'The :attribute format is not correct (123-456-7890).'
-        );
 
         $validator = \Validator::make($posted_data, $rules);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
-            // ->withInput($request->except('password'));
-        } else {
+        }
+        try{
 
-            try{
-                $base_url = public_path();
-                if($request->file('profile_image')) {
-                    $extension = $request->profile_image->getClientOriginalExtension();
-                    if($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png'){
+            $base_url = public_path();
+            if($request->file('profile_image')) {
+                $extension = $request->profile_image->getClientOriginalExtension();
+                if($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png'){
+                    $imageData = array();
+                    // $imageData['fileName'] = time().'_'.$request->profile_image->getClientOriginalName();
+                    $imageData['fileName'] = time().'_'.rand(1000000,9999999).'.'.$extension;
+                    $imageData['uploadfileObj'] = $request->file('profile_image');
+                    $imageData['fileObj'] = \Image::make($request->file('profile_image')->getRealPath());
+                    $imageData['folderName'] = 'profile_image';
 
-                        $imageData = array();
-                        // $imageData['fileName'] = time().'_'.$request->profile_image->getClientOriginalName();
-                        $imageData['fileName'] = time().'_'.rand(1000000,9999999).'.'.$extension;
-                        $imageData['uploadfileObj'] = $request->file('profile_image');
-                        $imageData['fileObj'] = \Image::make($request->file('profile_image')->getRealPath());
-                        $imageData['folderName'] = 'profile_image';
-
-                        $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
-                        $posted_data['profile_image'] = $uploadAssetRes;
-                        if(!$uploadAssetRes){
-                            return back()->withErrors([
-                                'profile_image' => 'Something wrong with your image, please try again later!',
-                            ])->withInput();
-                        }
-                    }else{
+                    $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
+                    $posted_data['profile_image'] = $uploadAssetRes;
+                    if(!$uploadAssetRes){
                         return back()->withErrors([
-                            'profile_image' => 'The Profile image format is not correct you can only upload (jpg, jpeg, png).',
+                            'profile_image' => 'Something wrong with your image, please try again later!',
                         ])->withInput();
                     }
+                }else{
+                    return back()->withErrors([
+                        'profile_image' => 'The Profile image format is not correct you can only upload (jpg, jpeg, png).',
+                    ])->withInput();
                 }
-
-                $latest_user = $this->UserObj->saveUpdateUser($posted_data);
-
-                $latest_user->assignRole($posted_data['user_role']);
-
-                \Session::flash('message', 'User Register Successfully!');
-
-            } catch (Exception $e) {
-                \Session::flash('error_message', $e->getMessage());
-                // dd("Error: ". $e->getMessage());
             }
-            // return redirect()->back()->withInput();
-            return redirect('/user');
+            if($request->file('personal_identity')) {
+                $extension = $request->personal_identity->getClientOriginalExtension();
+                if($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png'){
+                    $imageData = array();
+                    $imageData['fileName'] = time().'_'.rand(1000000,9999999).'.'.$extension;
+                    $imageData['uploadfileObj'] = $request->file('personal_identity');
+                    $imageData['fileObj'] = \Image::make($request->file('personal_identity')->getRealPath());
+                    $imageData['folderName'] = 'personal_identity';
+
+                    $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
+                    $posted_data['personal_identity'] = $uploadAssetRes;
+                    if(!$uploadAssetRes){
+                        return back()->withErrors([
+                            'personal_identity' => 'Something wrong with your image, please try again later!',
+                        ])->withInput();
+                    }
+                }else{
+                    return back()->withErrors([
+                        'personal_identity' => 'The Profile image format is not correct you can only upload (jpg, jpeg, png).',
+                    ])->withInput();
+                }
+            }
+
+            $posted_data['profile_completion'] = 100;
+            $posted_data['user_status'] = 'Verified';
+
+            $this->UserObj->saveUpdateUser($posted_data);
+            \Session::flash('message', 'Employee created Successfully!');
+            return redirect()->back();
+
+        } catch (Exception $e) {
+            \Session::flash('error_message', $e->getMessage());
         }
+        return redirect()->back()->withInput();
     }
 
     /**
@@ -598,9 +645,9 @@ class UserController extends Controller
                 $password = $credentials['password'];
                 $wp_hashed_password = $user->password;
 
+
                 if (WpPassword::check($password, $wp_hashed_password) || $wp_hashed_password == md5($credentials['password'])) {
                     if (\Auth::attempt($credentials)) {
-
                         if (\Auth::user()->profile_completion <= 100 ) {
                             return redirect('/editProfile');
                         }
@@ -629,7 +676,7 @@ class UserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@^&*()_+]).*$/',
             'confirm_password' => 'required|required_with:password|same:password',
         );
 

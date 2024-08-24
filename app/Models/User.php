@@ -124,9 +124,17 @@ class User extends Authenticatable
 	    if (isset($posted_data['role'])) {
             $query = $query->where('users.role', $posted_data['role']);
         }
+
+	    if (isset($posted_data['role_in'])) {
+            $query = $query->whereIn('users.role', $posted_data['role_in']);
+        }
         if (isset($posted_data['user_status'])) {
             $query = $query->where('users.user_status', $posted_data['user_status']);
         }
+
+        // if (isset($posted_data['verified_users'])) {
+        //     $query = $query->where('users.user_status', $posted_data['verified_users']);
+        // }
         if (isset($posted_data['last_seen'])) {
             $query = $query->where('users.last_seen', $posted_data['last_seen']);
         }

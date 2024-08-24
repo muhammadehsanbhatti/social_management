@@ -174,3 +174,142 @@ html .pace .pace-progress {
 	height: 20px;
 	margin-right: 15px;
 }
+.pending_account_btn {
+    background-color: transparent;
+    padding: 11px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    border: 2px solid #7C73DF;
+    color: #7C73DF;
+    font-weight: bold;
+    animation: pulse 1s infinite;
+    transition: all 0.3s ease;
+}
+
+.verify_account_btn {
+    background-color: #7367F0;
+    padding: 11px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.unverify_account_btn {
+    background-color: #FFD700;
+    padding: 11px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    border: none;
+    color: black;
+    font-weight: bold;
+    animation: shake 0.5s infinite;
+    transition: all 0.3s ease;
+}
+
+.block_account_btn {
+    background-color: #f44336;
+    padding: 11px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    border: none;
+    color: white;
+    font-weight: bold;
+    animation: blink 1s infinite;
+    transition: all 0.3s ease;
+}
+
+.pending_account_btn:hover,
+.verify_account_btn:hover,
+.unverify_account_btn:hover,
+.block_account_btn:hover {
+    opacity: 0.8;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.role-badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.status-verified {
+    background-color: #28a745;
+}
+
+.status-unverified {
+    background-color: #ffc107;
+}
+
+.status-pending {
+    background-color: #17a2b8;
+}
+
+.status-block {
+    background-color: #dc3545;
+}
+
+.role-employee {
+    background-color: #7367F0;
+}
+
+.role-user {
+    background-color: #6e6b7b;
+}
