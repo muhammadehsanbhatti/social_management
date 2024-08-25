@@ -459,6 +459,7 @@
 
     @yield('scripts')
     @yield('notificationScript')
+    @yield('user_change_status')
 
 </body>
 <!-- END: Body-->

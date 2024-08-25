@@ -141,6 +141,7 @@ Route::get('/oauth-response', function () {
 Route::middleware(['auth'])->group(function () {
 
     Route::post('/blockUnblockUser', [UserController::class, 'blockUnblockUser']);
+    Route::post('/user_change_status', [UserController::class, 'change_status'])->name('user_status');
     Route::post('/theme_mode', [UserController::class, 'theme_layout']);
     Route::post('/notification_token', [NotificationController::class, 'get_notificatiion_token']);
     // Route::post('/import_data_submit', [ImportExcelFileController::class, 'csv_import_data'])->name('csv_import_data');

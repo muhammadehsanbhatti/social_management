@@ -27,7 +27,7 @@
                     }
                 @endphp
 
-                <tr>
+                <tr data-user-id="{{ $item->id }}">
                     <td>{{ $sr_no }}</td>
                     <td>
                         <div class="display_images_list">
@@ -76,7 +76,7 @@
                                     break;
                             }
                         @endphp
-                        <span class="status-badge {{ $statusClass }}">{{ ucfirst($item->user_status) }}</span>
+                        <span class="status-badge {{ $statusClass }}" data-user-id="{{ $item->id }}">{{ ucfirst($item->user_status) }}</span>
                     </td>
                     <td>{{ date('M d, Y H:i A', strtotime($item->created_at)) }}</td>
 
@@ -90,31 +90,22 @@
                                 @php $any_permission_found = true; @endphp
                                 <div class="dropdown-menu">
                                     @can('user-status')
-                                    <form action="{{ url('blockUnblockUser')}}" method="Post" enctype="multipart/form-data">
-                                    @method('POST')
-                                    @csrf
-                                        @if ( $item->user_status == 'Active' )
+                                    {{-- <form action="{{ url('user_change_status')}}" method="Post" enctype="multipart/form-data">
+                                    @method('POST') --}}
+                                    {{-- @csrf --}}
+                                        {{-- <input type="hidden" name="update_id" value="{{$item->id}}">
+                                        <input type="hidden" name="user_status" value="2"> --}}
 
-                                            <input type="hidden" name="update_id" value="{{$item->id}}">
-                                            <input type="hidden" name="user_status" value="2">
-
-                                            <button type="submit" class="dropdown-item"  style="width:100%" id="block_user">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-x mr-50"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg>
-                                                <span>Block</span>
-                                            </button>
-
-                                        @else
-
-                                            <input type="hidden" name="update_id" value="{{$item->id}}">
-                                            <input type="hidden" name="user_status" value="1">
-
-                                            <button type="submit" class="dropdown-item"  style="width:100%" id="block_user">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check mr-50"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
-                                                <span>Unblock</span>
-                                            </button>
-
-                                        @endif
-                                    </form>
+                                        <button type="button" class="dropdown-item change-status-btn" data-toggle="modal" data-target="#statusModal-{{ $item->id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-x mr-50">
+                                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="8.5" cy="7" r="4"></circle>
+                                                <line x1="18" y1="8" x2="23" y2="13"></line>
+                                                <line x1="23" y1="8" x2="18" y2="13"></line>
+                                            </svg>
+                                            <span>Change Status</span>
+                                        </button>
+                                    {{-- </form> --}}
                                     @endcan
 
                                     @can('user-edit')
@@ -148,12 +139,41 @@
                         @endif
                     </td>
                 </tr>
+
+                <div class="modal fade" id="statusModal-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel-{{ $item->id }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="statusModalLabel-{{ $item->id }}">Change User Status</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <select id="statusSelect-{{ $item->id }}" name="user_status" class="form-control">
+                                    <option value="Pending" {{ $item->user_status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="Verified" {{ $item->user_status == 'Verified' ? 'selected' : '' }}>Verified</option>
+                                    <option value="Unverified" {{ $item->user_status == 'Unverified' ? 'selected' : '' }}>Unverified</option>
+                                    <option value="Block" {{ $item->user_status == 'Block' ? 'selected' : '' }}>Block</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary saveStatusBtn" data-user-id="{{ $item->id }}">Save changes</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+
             @endforeach
         </tbody>
     </table>
 
+
+
+
     <div class="pagination_links">
-        {{-- {!! $data['users']->links() !!} --}}
         @if (isset($data['users']) && count($data['users'])>0)
             {{ $data['users']->links('vendor.pagination.bootstrap-4') }}
         @else
@@ -161,5 +181,42 @@
         @endif
 
     </div>
-
 </div>
+
+@section('user_change_status')
+
+<script>
+    $(document).ready(function() {
+        $('.saveStatusBtn').click(function() {
+            var userId = $(this).data('user-id');
+            var selectedStatus = $('#statusSelect-' + userId).val();
+
+            console.log(userId);
+            console.log(selectedStatus);
+
+            $.ajax({
+                url: "{{ route('user_status') }}",
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    userId: userId,
+                    status: selectedStatus
+                },
+                success: function(response) {
+                   var userRow = $('tr[data-user-id="' + userId + '"]');
+
+                    var statusBadge = userRow.find('.status-badge');
+                    statusBadge.text(response.newStatus);
+                    statusBadge.removeClass().addClass('status-badge ' + response.statusClass);
+
+                    $('#statusModal-' + userId).modal('hide');
+                },
+                error: function(xhr) {
+                    alert('Something went wrong! Please try again.');
+                }
+            });
+        });
+    });
+</script>
+@endsection
+

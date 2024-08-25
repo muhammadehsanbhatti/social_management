@@ -648,7 +648,7 @@ class UserController extends Controller
 
                 if (WpPassword::check($password, $wp_hashed_password) || $wp_hashed_password == md5($credentials['password'])) {
                     if (\Auth::attempt($credentials)) {
-                        if (\Auth::user()->profile_completion <= 100 ) {
+                        if (\Auth::user()->profile_completion < 100 ) {
                             return redirect('/editProfile');
                         }
                         else{
@@ -752,6 +752,38 @@ class UserController extends Controller
 
     }
 
+    public function change_status(Request $request){
+
+        $posted_data = array();
+        $posted_data = $request->all();
+
+        $data = $this->UserObj->saveUpdateUser([
+            'update_id' => $posted_data['userId'],
+            'user_status' => $posted_data['status'],
+        ]);
+        $response = [
+            'newStatus' => ucfirst($data->user_status),
+            'statusClass' => $this->getStatusClass($data->user_status)
+        ];
+
+        return response()->json($response);
+
+    }
+    private function getStatusClass($status)
+    {
+        switch($status) {
+            case 'Verified':
+                return 'status-verified';
+            case 'Unverified':
+                return 'status-unverified';
+            case 'Pending':
+                return 'status-pending';
+            case 'Block':
+                return 'status-block';
+            default:
+                return 'status-unverified';
+        }
+    }
 
 
     public function sendNotification() {
