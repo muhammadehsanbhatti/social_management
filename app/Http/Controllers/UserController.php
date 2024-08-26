@@ -488,6 +488,9 @@ class UserController extends Controller
         if (!$user_detail->profile_image && !$request->file('profile_image')) {
             $rules['profile_image'] = 'required|image|mimes:jpeg,png,jpg';
         }
+        if (!$user_detail->identity_document && !$request->file('identity_document')) {
+            $rules['identity_document'] = 'required|mimes:pdf,doc,docx';
+        }
 
         if (!$user_detail->personal_identity && !$request->file('personal_identity')) {
             $rules['personal_identity'] = 'required|image|mimes:jpeg,png,jpg';
@@ -527,6 +530,33 @@ class UserController extends Controller
                     }else{
                         return back()->withErrors([
                             'profile_image' => 'The Profile image format is not correct you can only upload (jpg, jpeg, png).',
+                        ])->withInput();
+                    }
+                }
+                if($request->file('identity_document')) {
+                    $extension = $request->identity_document->getClientOriginalExtension();
+                    if($extension == 'doc' || $extension == 'pdf' || $extension == 'docx'){
+                        $imageData = array();
+                        // $imageData['fileName'] = time().'_'.$request->identity_document->getClientOriginalName();
+                        $imageData['fileName'] = time().'_'.rand(1000000,9999999).'.'.$extension;
+                        $imageData['uploadfileObj'] = $request->file('identity_document');
+                        $imageData['fileObj'] = \Image::make($request->file('identity_document')->getRealPath());
+                        $imageData['folderName'] = 'identity_document';
+
+                        $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
+                        $posted_data['identity_document'] = $uploadAssetRes;
+                        if(!$uploadAssetRes){
+                            return back()->withErrors([
+                                'identity_document' => 'Something wrong with your image, please try again later!',
+                            ])->withInput();
+                        }
+                        $imageData = array();
+                        $imageData['imagePath'] = $user_detail->identity_document;
+                        unlinkUploadedAssets($imageData);
+
+                    }else{
+                        return back()->withErrors([
+                            'identity_document' => 'The format not correct kindly upload back and front image of your identification (pdf,doc,docx)',
                         ])->withInput();
                     }
                 }

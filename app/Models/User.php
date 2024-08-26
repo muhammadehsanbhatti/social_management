@@ -121,6 +121,9 @@ class User extends Authenticatable
 	    if (isset($posted_data['personal_identity'])) {
             $query = $query->where('users.personal_identity', $posted_data['personal_identity']);
         }
+	    if (isset($posted_data['identity_document'])) {
+            $query = $query->where('users.identity_document', $posted_data['identity_document']);
+        }
 	    if (isset($posted_data['role'])) {
             $query = $query->where('users.role', $posted_data['role']);
         }
@@ -273,6 +276,9 @@ class User extends Authenticatable
         }
         if (isset($posted_data['profile_image'])) {
             $data->profile_image = $posted_data['profile_image'];
+        }
+        if (isset($posted_data['identity_document'])) {
+            $data->identity_document = $posted_data['identity_document'];
         }
         if (isset($posted_data['phone_number'])) {
             $data->phone_number = $posted_data['phone_number'];

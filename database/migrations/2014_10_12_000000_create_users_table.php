@@ -31,6 +31,7 @@ class CreateUsersTable extends Migration
             $table->longText('address')->nullable();
             $table->longText('description')->nullable();
             $table->string('personal_identity')->nullable();
+            $table->string('identity_document')->nullable();
             $table->string('email_verification_code', 10)->nullable();
             $table->enum('theme_mode', ['Light', 'Dark'])->default('Light');
             $table->double('time_spent')->default(0);
