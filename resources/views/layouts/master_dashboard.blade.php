@@ -110,16 +110,20 @@
                     <li class="nav-item"><a class="nav-link menu-toggle" href="javascript:void(0);"><i class="ficon" data-feather="menu"></i></a></li>
                 </ul>
             </div>
-
-            @if (Auth::user() && Auth::user()->user_status == 'Pending')
-                <button class="pending_account_btn" type="button">Kindly Check Email To Verify Account</button>
-            @elseif (Auth::user() && Auth::user()->user_status == 'Verified')
-                <button class="verify_account_btn" type="button">Your Account Verified</button>
-            @elseif (Auth::user() && Auth::user()->user_status == 'Unverified')
+            @if (Auth::user() && !is_null(Auth::user()->email_verification_code))
+                <button class="pending_account_btn" type="button">Kindly Check Email To Confirm Your Account</button>
+            @elseif (Auth::user() && Auth::user()->user_status == 'Pending' && is_null(Auth::user()->email_verification_code))
+                <button class="pending_account_btn" type="button">Kindly Wait, Until Admin Verify You</button>
+            @elseif (Auth::user() && Auth::user()->user_status == 'Verified' && is_null(Auth::user()->email_verification_code))
+                <button class="verify_account_btn" type="button">Congratulations! Admin Verified Your Account</button>
+            @elseif (Auth::user() && Auth::user()->user_status == 'Unverified' && is_null(Auth::user()->email_verification_code))
                 <button class="unverify_account_btn" type="button">Unfortunately, Admin Not Verified You</button>
-            @elseif (Auth::user() && Auth::user()->user_status == 'Block')
-                <button class="block_account_btn" type="button">Unfortunately, Your Account is Blocked</button>
+            @elseif (Auth::user() && Auth::user()->user_status == 'Block' && is_null(Auth::user()->email_verification_code))
+                <button class="unverify_account_btn" type="button">Unfortunately, Your Account is Blocked</button>
             @endif
+
+
+
             <ul class="nav navbar-nav align-items-center ml-auto">
                 <li class="nav-item d-none d-lg-block">
                     <a class="nav-link nav-link-style" id="theme_layout">

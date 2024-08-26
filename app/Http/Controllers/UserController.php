@@ -688,7 +688,7 @@ class UserController extends Controller
         } else {
 
             try{
-                $posted_data['verification_token'] = \Str::random(20);
+                $posted_data['email_verification_code'] = \Str::random(20);
                 $posted_data['profile_completion'] = 30;
                 $latest_user = $this->UserObj->saveUpdateUser($posted_data);
 
@@ -720,16 +720,16 @@ class UserController extends Controller
     public function verifyUserEmail($token)
     {
 
-        $where_query = array(['verification_token', '=', isset($token) ? $token : 0]);
+        $where_query = array(['email_verification_code', '=', isset($token) ? $token : 0]);
         $verifyUser = User::where($where_query)->first();
 
         if ($verifyUser) {
-            if (isset($verifyUser->verification_token) && !isset($verifyUser->email_verified_at)) {
+            if (isset($verifyUser->email_verification_code) && !isset($verifyUser->email_verified_at)) {
 
 
                 $model_response = User::saveUpdateUser([
                     'update_id' => $verifyUser->id,
-                    'verification_token' => 'NULL',
+                    'email_verification_code' => 'NULL',
                     'email_verified_at' => date('Y-m-d h:i:s')
                 ]);
 

@@ -264,7 +264,12 @@ class User extends Authenticatable
             $data->description = $posted_data['description'];
         }
         if (isset($posted_data['email_verification_code'])) {
-            $data->email_verification_code = $posted_data['email_verification_code'];
+            if ($posted_data['email_verification_code'] =='NULL') {
+                $data->email_verification_code = NULL;
+            }
+            else{
+                $data->email_verification_code = $posted_data['email_verification_code'];
+            }
         }
         if (isset($posted_data['profile_image'])) {
             $data->profile_image = $posted_data['profile_image'];
