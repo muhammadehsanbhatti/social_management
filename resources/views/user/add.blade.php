@@ -136,6 +136,7 @@
 
 
                                     <div class="col-md-4 col-12">
+                                        <div class="form-group">
                                         <label for="profile_image">Profile Image</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -160,9 +161,12 @@
                                                 </span>
                                             @enderror
                                         </div>
+
+                                    </div>
                                     </div>
 
                                     <div class="col-md-4 col-12">
+                                        <div class="form-group">
                                         <label for="personal_identity">Selfie with ID card</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -189,43 +193,51 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    </div>
                                     <div class="col-md-4 col-12">
-                                        <label for="personal_identity">Upload Identity Back and Font Image</label>
+                                        <div class="form-group">
+                                        <label for="identity_document">Upload Identity Back and Front Doc</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text basic-addon">
-                                                    <div class="display_images preview_personal_identity">
-                                                        @if (isset($data->personal_identity) && !empty($data->personal_identity))
-                                                            <a data-fancybox="demo"
-                                                                data-src="{{ is_image_exist($data->personal_identity) }}"><img
-                                                                    title="{{ $data->name }}"
-                                                                    src="{{ is_image_exist($data->personal_identity) }}"
-                                                                    height="100"></a>
+                                                    <div class="display_images preview_identity_document" style="padding: 11px !important">
+
+                                                        @if (isset($data->identity_document) && !empty($data->identity_document))
+                                                            <a data-fancybox="demo" href="{{ asset('identity_document/' . $data->identity_document) }}" download>
+                                                                <i class="fas fa-download"></i>
+                                                            </a>
+
                                                         @endif
+
                                                     </div>
                                                 </span>
                                             </div>
-                                            <input type="file" id="personal_identity"
-                                                data-img-val="preview_personal_identity"
-                                                class="form-control @error('personal_identity') is-invalid @enderror"
-                                                placeholder="Profile Image" name="personal_identity">
-                                            @error('personal_identity')
+                                            <input type="file" id="identity_document"
+                                                data-img-val="preview_identity_document"
+                                                class="form-control @error('identity_document') is-invalid @enderror"
+                                                placeholder="Id Card" name="identity_document">
+                                            @error('identity_document')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
                                         </div>
                                     </div>
+                                    </div>
 
                                     @if (Auth::user()->hasRole('User') || Auth::user()->hasRole('Employee'))
+                                    @php
+                                        $user_email_verification_status = 'Pending';
+                                        if (isset($data->email_verified_at) && !is_null($data->email_verified_at)) {
+                                            $user_email_verification_status = 'Verified';
+                                        }
+                                    @endphp
                                         <div class="col-md-4 col-12">
                                             <div class="form-group">
-                                                <label for="status">Status</label>
+                                                <label for="Account Verification">Account Verification</label>
                                                 <input
-                                                    value="{{ old('user_status', isset($data->user_status) ? $data->user_status : '') }}"
-                                                    type="text" id="user_status"
-                                                    class="form-control @error('user_status') is-invalid @enderror"
-                                                    placeholder="Enter user_status" name="user_status" disabled>
+                                                    value="{{ $user_email_verification_status }}"
+                                                    class="form-control" disabled>
                                             </div>
                                         </div>
                                     @endif

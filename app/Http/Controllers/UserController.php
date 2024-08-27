@@ -516,7 +516,7 @@ class UserController extends Controller
                         $imageData['fileObj'] = \Image::make($request->file('profile_image')->getRealPath());
                         $imageData['folderName'] = 'profile_image';
 
-                        $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
+                        $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = false, $thumbnail = false);
                         $posted_data['profile_image'] = $uploadAssetRes;
                         if(!$uploadAssetRes){
                             return back()->withErrors([
@@ -535,31 +535,22 @@ class UserController extends Controller
                 }
                 if($request->file('identity_document')) {
                     $extension = $request->identity_document->getClientOriginalExtension();
-                    if($extension == 'doc' || $extension == 'pdf' || $extension == 'docx'){
-                        $imageData = array();
-                        // $imageData['fileName'] = time().'_'.$request->identity_document->getClientOriginalName();
-                        $imageData['fileName'] = time().'_'.rand(1000000,9999999).'.'.$extension;
-                        $imageData['uploadfileObj'] = $request->file('identity_document');
-                        $imageData['fileObj'] = \Image::make($request->file('identity_document')->getRealPath());
-                        $imageData['folderName'] = 'identity_document';
+                    if($extension == 'pdf' || $extension == 'docs'){
+                            $file_name = time() . '_' . rand(1000000, 9999999) . '.' . $extension;
 
-                        $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
-                        $posted_data['identity_document'] = $uploadAssetRes;
-                        if(!$uploadAssetRes){
-                            return back()->withErrors([
-                                'identity_document' => 'Something wrong with your image, please try again later!',
-                            ])->withInput();
+                            $filePath = $request->file('identity_document')->storeAs('identity_document', $file_name, 'public');
+                            $posted_data['identity_document'] = 'storage/identity_document/' . $file_name;
+
+                            $imageData = array();
+                            $imageData['imagePath'] = $user_detail->identity_document;
+                            unlinkUploadedAssets($imageData);
+                        } else {
+                            $error_message['error'] = 'Group Image Only allowled jpg, jpeg or png image format.';
+                            return $this->sendError($error_message['error'], $error_message);
                         }
-                        $imageData = array();
-                        $imageData['imagePath'] = $user_detail->identity_document;
-                        unlinkUploadedAssets($imageData);
-
-                    }else{
-                        return back()->withErrors([
-                            'identity_document' => 'The format not correct kindly upload back and front image of your identification (pdf,doc,docx)',
-                        ])->withInput();
-                    }
                 }
+
+
                 if($request->file('personal_identity')) {
                     $extension = $request->personal_identity->getClientOriginalExtension();
                     if($extension == 'jpg' || $extension == 'jpeg' || $extension == 'png'){
@@ -570,7 +561,7 @@ class UserController extends Controller
                         $imageData['fileObj'] = \Image::make($request->file('personal_identity')->getRealPath());
                         $imageData['folderName'] = 'personal_identity';
 
-                        $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = true, $thumbnail = false);
+                        $uploadAssetRes = uploadAssets($imageData, $original = false, $optimized = false, $thumbnail = false);
                         $posted_data['personal_identity'] = $uploadAssetRes;
                         if(!$uploadAssetRes){
                             return back()->withErrors([

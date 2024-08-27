@@ -9,6 +9,8 @@
                 <th>Email</th>
                 <th>Role</th>
                 <th>Status</th>
+                <th>Selfie With ID</th>
+                <th>ID Card Identification</th>
                 <th>Created At</th>
                 <th>Actions</th>
             </tr>
@@ -77,6 +79,28 @@
                             }
                         @endphp
                         <span class="status-badge {{ $statusClass }}" data-user-id="{{ $item->id }}">{{ ucfirst($item->user_status) }}</span>
+                    </td>
+                    <td>
+                        <div class="display_images_list">
+
+                            <span class="avatar-color">
+                                <a data-fancybox="demo" data-src="{{ is_image_exist($item->personal_identity) }}">
+                                    <img title="{{ $item->name }}" src="{{ is_image_exist($item->personal_identity) }}" height="100">
+                                </a>
+                            </span>
+
+                        </div>
+                    </td>
+                    <td>
+                        <div class="display_images_list">
+
+                            <span class="avatar-color">
+                                <a href="{{ asset($item->identity_document) }}" download="{{ basename($item->identity_document) }}" title="{{ $item->identity_document }}">
+                                    <button type="button" class="download_button">Download</button>
+                                </a>
+                            </span>
+
+                        </div>
                     </td>
                     <td>{{ date('M d, Y H:i A', strtotime($item->created_at)) }}</td>
 
