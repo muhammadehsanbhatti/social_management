@@ -7,6 +7,7 @@
                 <th>Profile Image</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Phone No</th>
                 <th>Role</th>
                 <th>Status</th>
                 <th>Selfie With ID</th>
@@ -51,6 +52,7 @@
 
                     <td>{{ $item->first_name }} {{ $item->last_name }}</td>
                     <td>{{ $item->email }}</td>
+                    <td>{{ $item->phone_number }}</td>
                     <td>
                         <span class="role-badge {{ $item->role == 'Employee' ? 'role-employee' : 'role-user' }}">
                             {{ $item->role }}

@@ -228,8 +228,20 @@ class UserController extends Controller
             'count' => true
         ]);
 
-        $data['counts']['block_user'] = $this->UserObj->getUser([
+        $data['counts']['block_users'] = $this->UserObj->getUser([
             'user_status' => 'Block',
+            'role_in' => ['User', 'Employee'],
+            'count' => true
+        ]);
+
+        $data['counts']['account_verified_users'] = $this->UserObj->getUser([
+            'is_email_verification_code' => true,
+            'role_in' => ['User', 'Employee'],
+            'count' => true
+        ]);
+
+        $data['counts']['account_not_verified_users'] = $this->UserObj->getUser([
+            'is_email_verified_at' => true,
             'role_in' => ['User', 'Employee'],
             'count' => true
         ]);
