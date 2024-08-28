@@ -94,6 +94,7 @@ class UserSeeder extends Seeder
                         'edit-profile',
                         'change-password',
                         'user-list',
+                        'user-detail',
                         'user-create',
                         'user-edit',
                         'user-delete',

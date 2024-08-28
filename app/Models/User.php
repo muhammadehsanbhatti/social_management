@@ -71,9 +71,15 @@ class User extends Authenticatable
     //     return $status;
     // }
 
+    public function employeDetail()
+    {
+        return $this->belongsTo(User::class, 'employee_id');
+    }
+
+
     public static function getUser($posted_data = array())
     {
-        $query = User::latest();
+        $query = User::latest()->with('employeDetail');
 
         // if (!isset($posted_data['comma_separated_ids'])) {
         //     $query = $query->with('Role');
