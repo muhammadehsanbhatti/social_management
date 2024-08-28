@@ -151,6 +151,15 @@
                                         </button>
                                         {{-- </form> --}}
                                     @endcan
+                                    @can('user-detail')
+                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#userDetailModal-{{ $item->id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye mr-50">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                            <span>View Detail</span>
+                                        </button>
+                                    @endcan
 
                                     @can('user-edit')
                                         <a class="dropdown-item" href="{{ url('user') }}/{{ $item->id }}/edit">
@@ -163,21 +172,7 @@
                                             <span>Edit</span>
                                         </a>
                                     @endcan
-                                    @can('user-detail')
-                                        <button type="button" class="dropdown-item " data-toggle="modal"
-                                            data-target="#userDetailModal-{{ $item->id }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-user-x mr-50">
-                                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                <circle cx="8.5" cy="7" r="4"></circle>
-                                                <line x1="18" y1="8" x2="23" y2="13"></line>
-                                                <line x1="23" y1="8" x2="18" y2="13"></line>
-                                            </svg>
-                                            <span>View Detail</span>
-                                        </button>
-                                    @endcan
+
 
                                     @can('user-delete')
                                         <form action="{{ url('user/' . $item['id']) }}" method="post">
@@ -224,7 +219,9 @@
                                 <div id="userDetailContent-{{ $item->id }}">
                                     @if($item->role == 'User')
                                         <div class="user_detail">
-                                            <h4>User Detail</h4>
+                                            <div class="user_detail_heading pt-2 pb-2"  style="text-align: center;">
+                                                <h4 style="display: inline-block; border: 2px solid #be97ff; border-radius: 4px; padding: 10px;margin: 0;">User Detail</h4>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="user_info_div mb-2">
@@ -289,7 +286,9 @@
                                     @endif
                                     @if($item->role == 'Employee' || isset($item->employee_id))
                                     <div class="employee_detail">
-                                        <h4>Employee Detail</h4>
+                                        <div class="employee_detail_heading pt-2 pb-2" style="text-align: center;">
+                                            <h4 style=" display: inline-block; border: 2px solid #be97ff;border-radius: 4px; padding: 10px;margin: 0;">Employee Detail</h4>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="user_info_div mb-2">
