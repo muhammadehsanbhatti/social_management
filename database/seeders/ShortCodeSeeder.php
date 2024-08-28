@@ -54,6 +54,16 @@ class ShortCodeSeeder extends Seeder
                             'title' => '[new_password]',
                             'created_at' => now(),
                             'updated_at' => now(),
+                        ],
+                        [
+                            'title' => '[status_change]',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
+                        [
+                            'title' => '[payment_notified]',
+                            'created_at' => now(),
+                            'updated_at' => now(),
                         ]
 
 

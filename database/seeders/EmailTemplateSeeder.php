@@ -114,6 +114,32 @@ class EmailTemplateSeeder extends Seeder
                             'send_on' => 'OTP Verification',
                             'created_at' => now(),
                             'updated_at' => now(),
+                        ],
+                        [
+                            'subject' => 'Update Status',
+                            'message' => encrypt('<div style="font-size:16px;">
+                                                    <p>Hi <b>[user_name],</b></p>
+                                                    <p>Your account [status_change] changed .</p>
+                                                    <br>
+                                                    <p>Team <strong>[app_name]</strong></p>
+                                                    <br>
+                                                </div>'),
+                            'send_on' => 'Update Status',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
+                        [
+                            'subject' => 'Confirmation email',
+                            'message' => encrypt('<div style="font-size:16px;">
+                                                    <p>Hi <b>[user_name],</b></p>
+                                                    <p>Your Payment [payment_notified] Successfull .</p>
+                                                    <br>
+                                                    <p>Team <strong>[app_name]</strong></p>
+                                                    <br>
+                                                </div>'),
+                            'send_on' => 'Confirmation email',
+                            'created_at' => now(),
+                            'updated_at' => now(),
                         ]
                     ]);
                 } else { echo "[Email Template Table is not empty]\n"; }
@@ -121,6 +147,6 @@ class EmailTemplateSeeder extends Seeder
             }catch(Exception $e) {
                 echo $e->getMessage();
             }
-            
+
     }
 }

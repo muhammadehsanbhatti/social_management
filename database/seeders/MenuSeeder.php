@@ -32,7 +32,7 @@ class MenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'award',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -43,7 +43,7 @@ class MenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'lock',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -54,7 +54,7 @@ class MenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'unlock',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -65,7 +65,7 @@ class MenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'user',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -76,7 +76,7 @@ class MenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'menu',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -87,9 +87,31 @@ class MenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'menu',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
-                        ]
+                        ],
+                        [
+                            'title' => 'User Depends',
+                            'url' => '/deposit_fund',
+                            'slug' => 'deposit-fund-list',
+                            'sort_order' => 7,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'menu',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
+                        [
+                            'title' => 'Terms & Condition',
+                            'url' => '/terms_condition',
+                            'slug' => 'terms-condition-list',
+                            'sort_order' => 8,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'menu',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
                     ]);
 
                 } else { echo "[Menus Table is not empty]\n"; }
@@ -97,6 +119,6 @@ class MenuSeeder extends Seeder
             }catch(Exception $e) {
                 echo $e->getMessage();
             }
-            
+
     }
 }

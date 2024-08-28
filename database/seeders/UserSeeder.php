@@ -115,7 +115,15 @@ class UserSeeder extends Seeder
                         'sub-menu-create',
                         'sub-menu-edit',
                         'sub-menu-delete',
-                        'assign-permission'
+                        'assign-permission',
+                        'deposit-fund-list',
+                        'deposit-fund-create',
+                        'deposit-fund-edit',
+                        'deposit-fund-delete',
+                        'terms-condition-list',
+                        'terms-condition-create',
+                        'terms-condition-edit',
+                        'terms-condition-delete',
                     ];
 
                     foreach ($permissions as $permission) {

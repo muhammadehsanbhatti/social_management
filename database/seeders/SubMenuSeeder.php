@@ -33,7 +33,7 @@ class SubMenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'list',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -45,7 +45,7 @@ class SubMenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'list',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -57,7 +57,7 @@ class SubMenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'user',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -69,7 +69,7 @@ class SubMenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'user',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -81,7 +81,7 @@ class SubMenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'user',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -93,7 +93,7 @@ class SubMenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'user',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -105,7 +105,7 @@ class SubMenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'list',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -117,7 +117,7 @@ class SubMenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'list',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -129,7 +129,7 @@ class SubMenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'list',
-                            'created_at' => now(),	
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ],
                         [
@@ -141,7 +141,55 @@ class SubMenuSeeder extends Seeder
                             'status' => 'Published',
                             'asset_type' => 'Icon',
                             'asset_value' => 'list',
-                            'created_at' => now(),	
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
+                        [
+                            'menu_id' => 7,
+                            'title' => 'Add',
+                            'url' => '/deposit_fund/create',
+                            'slug' => 'deposit-fund-create',
+                            'sort_order' => 1,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'list',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
+                        [
+                            'menu_id' => 7,
+                            'title' => 'List',
+                            'url' => '/deposit_fund',
+                            'slug' => 'deposit-fund-list',
+                            'sort_order' => 2,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'list',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
+                        [
+                            'menu_id' => 8,
+                            'title' => 'Add',
+                            'url' => '/terms_condition/create',
+                            'slug' => 'terms-condition-create',
+                            'sort_order' => 1,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'list',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
+                        [
+                            'menu_id' => 8,
+                            'title' => 'List',
+                            'url' => '/terms_condition',
+                            'slug' => 'terms-condition-list',
+                            'sort_order' => 2,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'list',
+                            'created_at' => now(),
                             'updated_at' => now(),
                         ]
                     ]);
@@ -151,6 +199,6 @@ class SubMenuSeeder extends Seeder
             }catch(Exception $e) {
                 echo $e->getMessage();
             }
-            
+
     }
 }

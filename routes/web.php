@@ -8,7 +8,10 @@ use App\Http\Controllers\EmailShortCodeController;
 use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\DepositFundController;
+use App\Http\Controllers\TermsConditionController;
 use App\Http\Controllers\AssignPermissionController;
+use App\Http\Controllers\PaystackController;
 use App\Http\Controllers\SubMenuController;
 // use Google\Service\Storage;
 use Illuminate\Support\Facades\Storage;
@@ -151,6 +154,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/editProfile', [UserController::class, 'editProfile']);
     Route::post('export', [UserController::class, 'export_data'])->name('export_data_to_file');
 
+    Route::post('paystack/webhook', [PaystackController::class, 'handleWebhook']);
+    Route::get('pay', [PaystackController::class, 'redirectToGateway'])->name('pay');
+    Route::get('payment/callback', [PaystackController::class, 'handleGatewayCallback']);
+
+
+
     //resouce routes
     Route::resource('role', RoleController::class);
     Route::resource('user', UserController::class);
@@ -161,5 +170,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('notification', NotificationController::class);
     Route::resource('email_template', EmailTemplateController::class);
     Route::resource('short_codes', EmailShortCodeController::class);
+    Route::resource('deposit_fund', DepositFundController::class);
+    Route::resource('terms_condition', TermsConditionController::class);
     // Route::resource('import_excel', ImportExcelFileController::class);
 });

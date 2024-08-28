@@ -22,6 +22,8 @@ use App\Models\SubMenu;
 use App\Models\Permission;
 use App\Models\AssignPermission;
 use App\Models\DocumentAsset;
+use App\Models\DepositFund;
+use App\Models\TermsCondition;
 
 
 use DB;
@@ -49,6 +51,8 @@ class Controller extends BaseController
     public $AssignPermissionObj;
     public $ContactObj;
     public $DocumentAssetObj;
+    public $DepositFundObj;
+    public $TermsConditionObj;
 
 
     public function __construct() {
@@ -66,6 +70,8 @@ class Controller extends BaseController
         $this->PermissionObj = new Permission();
         $this->AssignPermissionObj = new AssignPermission();
         $this->DocumentAssetObj = new DocumentAsset();
+        $this->DepositFundObj = new DepositFund();
+        $this->TermsConditionObj = new TermsCondition();
     }
 
     /**
