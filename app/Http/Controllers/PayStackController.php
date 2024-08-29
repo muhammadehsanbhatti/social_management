@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use GuzzleHttp\Exception\RequestException;
 use Paystack;
 
 class PayStackController extends Controller
@@ -30,16 +31,33 @@ class PayStackController extends Controller
         // Process webhook payload and update the database accordingly
     }
 
-    public function redirectToGateway()
+    public function redirectToGateway(Request $request)
     {
-        request()->validate([
-            'amount' => 'required|integer|min:100',
-            'email' => 'required|email',
-        ]);
 
-        return Paystack::getAuthorizationUrl()->redirectNow();
+
+        try {
+            $request->validate([
+                'amount' => 'required|integer|min:100',
+                'email' => 'required|email',
+            ]);
+
+            $amount = $request->input('amount');
+            $email = $request->input('email');
+
+            // Set up Paystack payment initialization with the amount and email
+            $authorizationUrl = Paystack::getAuthorizationUrl([
+                'amount' => $amount * 100, // Paystack requires amount in kobo
+                'email' => $email,
+            ])->getTargetUrl();
+
+            return redirect($authorizationUrl);
+        } catch (RequestException $e) {
+            Log::error('Guzzle Request Exception: ' . $e->getMessage());
+            return redirect()->route('your.failure.route')->with('error_message', 'Something went wrong. Please try again.');
+        }
+
+
     }
-
     /**
      * Handle Paystack payment callback
      * @return void
@@ -48,18 +66,14 @@ class PayStackController extends Controller
     {
         $paymentDetails = Paystack::getPaymentData();
 
-        // Now you have the payment details, you can process the payment information, save to DB, etc.
-        // Example:
         if ($paymentDetails['status'] && $paymentDetails['data']['status'] === 'success') {
             // Payment was successful
-            // Save the payment details to the database
-            // Display a success message to the user
+            // Save the payment details to the database or perform other actions
             return redirect()->route('your.success.route')->with('message', 'Payment successful!');
         }
 
         return redirect()->route('your.failure.route')->with('error_message', 'Payment failed. Please try again.');
     }
-
 
 
     public function index()
@@ -74,7 +88,7 @@ class PayStackController extends Controller
      */
     public function create()
     {
-        echo '<pre>'; print_r("SDfasdfs"); echo '<pre>'; exit;
+        return view('deposit_fund.add');
     }
 
     /**

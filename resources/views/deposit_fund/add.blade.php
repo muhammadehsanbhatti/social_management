@@ -29,19 +29,15 @@
                                     <div class="alert alert-danger"><b>Sorry: </b>{{ Session::get('error_message') }}</div>
                                 @endif
 
-                                <form method="POST" action="{{ route('pay') }}">
+                                <form action="{{ route('pay') }}" method="GET">
                                     @csrf
-                                    <div class="form-group">
-                                        <label for="amount">Amount</label>
-                                        <input type="number" class="form-control" name="amount" required>
-                                    </div>
+                                    <label for="amount">Amount:</label>
+                                    <input type="number" id="amount" name="amount" required min="100">
 
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="email" class="form-control" name="email" required>
-                                    </div>
+                                    <label for="email">Email:</label>
+                                    <input type="email" id="email" name="email" required>
 
-                                    <button type="submit" class="btn btn-primary">Pay Now</button>
+                                    <button type="submit">Pay with Paystack</button>
                                 </form>
                             </div>
                         </div>

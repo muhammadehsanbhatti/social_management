@@ -170,7 +170,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('notification', NotificationController::class);
     Route::resource('email_template', EmailTemplateController::class);
     Route::resource('short_codes', EmailShortCodeController::class);
-    Route::resource('deposit_fund', DepositFundController::class);
+    Route::resource('deposit_fund', PaystackController::class);
     Route::resource('terms_condition', TermsConditionController::class);
     // Route::resource('import_excel', ImportExcelFileController::class);
 });
