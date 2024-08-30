@@ -154,11 +154,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/editProfile', [UserController::class, 'editProfile']);
     Route::post('export', [UserController::class, 'export_data'])->name('export_data_to_file');
 
-    Route::post('paystack/webhook', [PaystackController::class, 'handleWebhook']);
-    Route::get('pay', [PaystackController::class, 'redirectToGateway'])->name('pay');
-    Route::get('payment/callback', [PaystackController::class, 'handleGatewayCallback']);
+    // Route::post('paystack/webhook', [PaystackController::class, 'handleWebhook']);
+    // Route::post('pay', [PaystackController::class, 'redirectToGateway'])->name('pay');
+    // Route::get('payment/callback', [PaystackController::class, 'handleGatewayCallback']);
 
 
+    Route::post('/pay', [PaystackController::class, 'redirectToGateway'])->name('pay');
+    Route::get('/payment/callback', [PaystackController::class, 'handleGatewayCallback']);
 
     //resouce routes
     Route::resource('role', RoleController::class);

@@ -178,6 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\GoogleDriveServiceProvider::class,
+        Unicodeveloper\Paystack\PaystackServiceProvider::class,
 
         // Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
@@ -237,5 +238,6 @@ return [
         // 'Calendar' => LaravelFullCalendar\Facades\Calendar::class,
         // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Paystack' => Unicodeveloper\Paystack\Facades\Paystack::class,
     ],
 ];
