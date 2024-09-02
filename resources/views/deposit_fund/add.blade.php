@@ -17,12 +17,12 @@
 
                             <div class="card-body">
                                 <form method="POST" action="{{ route('pay') }}" accept-charset="UTF-8" class="form-horizontal" role="form">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="email" value="otemuyiwa@gmail.com">
+                                    @csrf
+                                    <input type="hidden" name="email" value="ma496234@gmail.com">
                                     <input type="hidden" name="orderID" value="345">
-                                    <input type="hidden" name="amount" value="80000">
+                                    <input type="hidden" name="amount" value="8000">
                                     <input type="hidden" name="quantity" value="1">
-                                    <input type="hidden" name="currency" value="NGN">
+                                    <input type="hidden" name="currency" value="ZAR">
                                     <input type="hidden" name="metadata" value="{{ json_encode(['key_name' => 'value']) }}">
                                     <input type="hidden" name="reference" value="{{ Paystack::genTranxRef() }}">
 

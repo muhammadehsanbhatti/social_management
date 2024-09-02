@@ -160,7 +160,16 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::post('/pay', [PaystackController::class, 'redirectToGateway'])->name('pay');
-    Route::get('/payment/callback', [PaystackController::class, 'handleGatewayCallback']);
+    Route::get('/payment/callback', [PaystackController::class, 'handleGatewayCallback'])->name('payment.callback');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/paystack/redirect', [PaystackController::class, 'redirectToGateway'])->name('paystack.redirect');
+    Route::get('/paystack/callback', [PaystackController::class, 'handleGatewayCallback'])->name('paystack.callback');
+    Route::get('/payment/success', function () {
+        return "Payment was successful!";
+    })->name('payment.success');
+    Route::get('/payment/failure', function () {
+        return "Payment failed!";
+    })->name('payment.failure');
 
     //resouce routes
     Route::resource('role', RoleController::class);
