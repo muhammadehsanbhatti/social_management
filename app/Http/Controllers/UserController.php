@@ -288,6 +288,9 @@ class UserController extends Controller
         $posted_data = $request->all();
         $posted_data['paginate'] = 10;
         $posted_data['users_not_in'] = [1];
+        if (\Auth::user()->role == 'Employee') {
+            $posted_data['users_not'] = 'Employee';
+        }
         // $posted_data['printsql'] = true;
         $data['users'] = $this->UserObj->getUser($posted_data);
 
