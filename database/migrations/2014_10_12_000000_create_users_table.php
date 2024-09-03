@@ -25,7 +25,8 @@ class CreateUsersTable extends Migration
             $table->string('profile_image')->nullable();
             $table->string('phone_number')->nullable();
              $table->string('country', 100)->nullable();
-            $table->enum('user_status', ['Active','Verified','Unverified','Pending','Block'])->default('Pending');
+            $table->enum('user_status', ['Active','Verified','Reject','Unverified','Pending','Block'])->default('Pending');
+            $table->string('change_status_reason')->nullable();
             $table->enum('role', ['Admin','User','Employee'])->default('User');
             $table->enum('register_from', ['Web', 'Facebook', 'Gmail', 'Apple', 'IOS', 'Android'])->default('Web');
             $table->timestamp('email_verified_at')->nullable();

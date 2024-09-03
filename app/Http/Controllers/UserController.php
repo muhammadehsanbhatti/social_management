@@ -796,6 +796,8 @@ class UserController extends Controller
         $data = $this->UserObj->saveUpdateUser([
             'update_id' => $posted_data['userId'],
             'user_status' => $posted_data['status'],
+            'employee_id' => \Auth::user()->id,
+            'change_status_reason' => $request->change_status_reason,
         ]);
         $response = [
             'newStatus' => ucfirst($data->user_status),
@@ -810,6 +812,8 @@ class UserController extends Controller
         switch($status) {
             case 'Verified':
                 return 'status-verified';
+            case 'Reject':
+                    return 'status-block';
             case 'Unverified':
                 return 'status-unverified';
             case 'Pending':

@@ -118,6 +118,12 @@ class User extends Authenticatable
 	    if (isset($posted_data['phone_number'])) {
             $query = $query->where('users.phone_number', $posted_data['phone_number']);
         }
+	    if (isset($posted_data['employee_id'])) {
+            $query = $query->where('users.employee_id', $posted_data['employee_id']);
+        }
+	    if (isset($posted_data['change_status_reason'])) {
+            $query = $query->where('users.change_status_reason', $posted_data['change_status_reason']);
+        }
 	    if (isset($posted_data['country'])) {
             $query = $query->where('users.country', $posted_data['country']);
         }
@@ -254,6 +260,9 @@ class User extends Authenticatable
         if (isset($posted_data['full_name'])) {
             $data->full_name = $posted_data['full_name'];
         }
+        if (isset($posted_data['employee_id'])) {
+            $data->employee_id = $posted_data['employee_id'];
+        }
         if (isset($posted_data['email'])) {
             $data->email = $posted_data['email'];
         }
@@ -303,6 +312,9 @@ class User extends Authenticatable
         }
         if (isset($posted_data['user_status'])) {
             $data->user_status = $posted_data['user_status'];
+        }
+        if (isset($posted_data['change_status_reason'])) {
+            $data->change_status_reason = $posted_data['change_status_reason'];
         }
         if (isset($posted_data['register_from'])) {
             $data->register_from = $posted_data['register_from'];

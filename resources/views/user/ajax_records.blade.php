@@ -373,6 +373,7 @@
                     aria-labelledby="statusModalLabel-{{ $item->id }}" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
+
                             <div class="modal-header">
                                 <h5 class="modal-title" id="statusModalLabel-{{ $item->id }}">Change User
                                     Status</h5>
@@ -386,6 +387,9 @@
                                     <option value="Pending" {{ $item->user_status == 'Pending' ? 'selected' : '' }}>
                                         Pending
                                     </option>
+                                    <option value="Reject" {{ $item->user_status == 'Reject' ? 'selected' : '' }}>
+                                        Reject
+                                    </option>
                                     <option value="Verified" {{ $item->user_status == 'Verified' ? 'selected' : '' }}>
                                         Verified
                                     </option>
@@ -395,6 +399,11 @@
                                     <option value="Block" {{ $item->user_status == 'Block' ? 'selected' : '' }}>
                                         Block</option>
                                 </select>
+                                <div id="rejectionReasonDiv-{{ $item->id }}" style="display: none; margin-top: 10px;">
+                                    <label for="rejectionReason-{{ $item->id }}">Reason:</label>
+                                    <input type="text" id="rejectionReason-{{ $item->id }}" name="change_status_reason" class="form-control" />
+                                </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -424,6 +433,22 @@
 @section('user_change_status')
     <script>
         $(document).ready(function() {
+            const rejectionReasonDiv = document.getElementById('rejectionReasonDiv-{{ $item->id }}');
+            const rejectionReasonInput = document.getElementById('rejectionReason-{{ $item->id }}');
+            const statusSelect = document.getElementById('statusSelect-{{ $item->id }}');
+
+            statusSelect.addEventListener('change', function () {
+                if (this.value === 'Reject' || this.value === 'Verified') {
+                    rejectionReasonDiv.style.display = 'block';
+                    rejectionReasonInput.setAttribute('required', 'required');
+                } else {
+                    rejectionReasonDiv.style.display = 'none';
+                    rejectionReasonInput.removeAttribute('required');
+                }
+            });
+
+
+
 
             function showUserDetails(userId) {
                 // Optionally, you can show a loader here
@@ -452,9 +477,11 @@
             $('.saveStatusBtn').click(function() {
                 var userId = $(this).data('user-id');
                 var selectedStatus = $('#statusSelect-' + userId).val();
+                var rejectionReason = '';
+                if (selectedStatus === 'Reject' || electedStatus === 'Verified') {
+                    rejectionReason = $('#rejectionReason-' + userId).val();
+                }
 
-                console.log(userId);
-                console.log(selectedStatus);
 
                 $.ajax({
                     url: "{{ route('user_status') }}",
@@ -462,7 +489,8 @@
                     data: {
                         _token: "{{ csrf_token() }}",
                         userId: userId,
-                        status: selectedStatus
+                        status: selectedStatus,
+                        change_status_reason: rejectionReason
                     },
                     success: function(response) {
                         var userRow = $('tr[data-user-id="' + userId + '"]');
