@@ -152,8 +152,12 @@
                                         {{-- </form> --}}
                                     @endcan
                                     @can('user-detail')
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#userDetailModal-{{ $item->id }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye mr-50">
+                                        <button type="button" class="dropdown-item" data-toggle="modal"
+                                            data-target="#userDetailModal-{{ $item->id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-eye mr-50">
                                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                                 <circle cx="12" cy="12" r="3"></circle>
                                             </svg>
@@ -217,10 +221,12 @@
                             <div class="modal-body">
                                 <!-- Content will be loaded here dynamically -->
                                 <div id="userDetailContent-{{ $item->id }}">
-                                    @if($item->role == 'User')
+                                    @if ($item->role == 'User')
                                         <div class="user_detail">
-                                            <div class="user_detail_heading pt-2 pb-2"  style="text-align: center;">
-                                                <h4 style="display: inline-block; border: 2px solid #be97ff; border-radius: 4px; padding: 10px;margin: 0;">User Detail</h4>
+                                            <div class="user_detail_heading pt-2 pb-2" style="text-align: center;">
+                                                <h4
+                                                    style="display: inline-block; border: 2px solid #be97ff; border-radius: 4px; padding: 10px;margin: 0;">
+                                                    User Detail</h4>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">
@@ -284,72 +290,75 @@
                                             </div>
                                         </div>
                                     @endif
-                                    @if($item->role == 'Employee' || isset($item->employee_id))
-                                    <div class="employee_detail">
-                                        <div class="employee_detail_heading pt-2 pb-2" style="text-align: center;">
-                                            <h4 style=" display: inline-block; border: 2px solid #be97ff;border-radius: 4px; padding: 10px;margin: 0;">Employee Detail</h4>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="user_info_div mb-2">
-                                                    <h4>User First Name</h4>
-                                                    <span>{{ $item->first_name }}</span>
-                                                </div>
-                                                <div class="user_info_div mb-2">
-                                                    <h4>User Last Name</h4>
-                                                    <span>{{ $item->last_name }}</span>
-                                                </div>
+                                    @if ($item->role == 'Employee' || isset($item->employee_id))
+                                        <div class="employee_detail">
+                                            <div class="employee_detail_heading pt-2 pb-2"
+                                                style="text-align: center;">
+                                                <h4
+                                                    style=" display: inline-block; border: 2px solid #be97ff;border-radius: 4px; padding: 10px;margin: 0;">
+                                                    Employee Detail</h4>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>User First Name</h4>
+                                                        <span>{{ $item->first_name }}</span>
+                                                    </div>
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>User Last Name</h4>
+                                                        <span>{{ $item->last_name }}</span>
+                                                    </div>
 
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="user_info_div mb-2">
-                                                    <h4>Email</h4>
-                                                    <span>{{ $item->email }}</span>
                                                 </div>
-                                                <div class="user_info_div mb-2">
-                                                    <h4>Phone</h4>
-                                                    <span>{{ $item->phone_number }}</span>
+                                                <div class="col-md-4">
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>Email</h4>
+                                                        <span>{{ $item->email }}</span>
+                                                    </div>
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>Phone</h4>
+                                                        <span>{{ $item->phone_number }}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="user_info_div mb-2">
-                                                    <h4>DOB</h4>
-                                                    <span>{{ $item->dob }}</span>
-                                                </div>
-                                                <div class="user_info_div mb-2">
-                                                    <h4>Status</h4>
-                                                    <span>{{ $item->user_status }}</span>
-                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>DOB</h4>
+                                                        <span>{{ $item->dob }}</span>
+                                                    </div>
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>Status</h4>
+                                                        <span>{{ $item->user_status }}</span>
+                                                    </div>
 
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="user_info_div mb-2">
-                                                    <h4>Email Verified At</h4>
-                                                    <span>{{ $item->email_verified_at }}</span>
                                                 </div>
-                                                <div class="user_info_div mb-2">
-                                                    <h4>User last login</h4>
-                                                    <span>{{ $item->last_seen }}</span>
+                                                <div class="col-md-4">
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>Email Verified At</h4>
+                                                        <span>{{ $item->email_verified_at }}</span>
+                                                    </div>
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>User last login</h4>
+                                                        <span>{{ $item->last_seen }}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="user_info_div mb-2">
-                                                    <h4>Role</h4>
-                                                    <span>{{ $item->role }}</span>
+                                                <div class="col-md-4">
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>Role</h4>
+                                                        <span>{{ $item->role }}</span>
+                                                    </div>
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>Register From</h4>
+                                                        <span>{{ $item->register_from }}</span>
+                                                    </div>
                                                 </div>
-                                                <div class="user_info_div mb-2">
-                                                    <h4>Register From</h4>
-                                                    <span>{{ $item->register_from }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="user_info_div mb-2">
-                                                    <h4>Country</h4>
-                                                    <span>{{ $item->country }}</span>
+                                                <div class="col-md-4">
+                                                    <div class="user_info_div mb-2">
+                                                        <h4>Country</h4>
+                                                        <span>{{ $item->country }}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                     @endif
 
                                 </div>
@@ -357,46 +366,44 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
 
-
-                        <div class="modal fade" id="statusModal-{{ $item->id }}" tabindex="-1" role="dialog"
-                            aria-labelledby="statusModalLabel-{{ $item->id }}" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="statusModalLabel-{{ $item->id }}">Change User
-                                            Status</h5>
-                                        <button type="button" class="close" data-dismiss="modal"
-                                            aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <select id="statusSelect-{{ $item->id }}" name="user_status"
-                                            class="form-control">
-                                            <option value="Pending"
-                                                {{ $item->user_status == 'Pending' ? 'selected' : '' }}>Pending
-                                            </option>
-                                            <option value="Verified"
-                                                {{ $item->user_status == 'Verified' ? 'selected' : '' }}>Verified
-                                            </option>
-                                            <option value="Unverified"
-                                                {{ $item->user_status == 'Unverified' ? 'selected' : '' }}>Unverified
-                                            </option>
-                                            <option value="Block"
-                                                {{ $item->user_status == 'Block' ? 'selected' : '' }}>
-                                                Block</option>
-                                        </select>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary saveStatusBtn"
-                                            data-user-id="{{ $item->id }}">Save changes</button>
-                                    </div>
-                                </div>
+                <div class="modal fade" id="statusModal-{{ $item->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="statusModalLabel-{{ $item->id }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="statusModalLabel-{{ $item->id }}">Change User
+                                    Status</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <select id="statusSelect-{{ $item->id }}" name="user_status"
+                                    class="form-control">
+                                    <option value="Pending" {{ $item->user_status == 'Pending' ? 'selected' : '' }}>
+                                        Pending
+                                    </option>
+                                    <option value="Verified" {{ $item->user_status == 'Verified' ? 'selected' : '' }}>
+                                        Verified
+                                    </option>
+                                    <option value="Unverified"
+                                        {{ $item->user_status == 'Unverified' ? 'selected' : '' }}>Unverified
+                                    </option>
+                                    <option value="Block" {{ $item->user_status == 'Block' ? 'selected' : '' }}>
+                                        Block</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary saveStatusBtn"
+                                    data-user-id="{{ $item->id }}">Save changes</button>
                             </div>
                         </div>
+                    </div>
+                </div>
             @endforeach
         </tbody>
     </table>
