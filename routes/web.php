@@ -106,7 +106,7 @@ Route::get('/test', [UserController::class, 'testing']);
 
 
 // Login
-Route::get('/', [UserController::class, 'login']);
+Route::get('/', [UserController::class, 'welcome']);
 Route::get('/sp-login', [UserController::class, 'login'])->name('sp-login');
 Route::post('/accountLogin', [UserController::class, 'accountLogin'])->name('accountLogin');
 

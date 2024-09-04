@@ -28,7 +28,7 @@ class UserController extends Controller
 
     public function welcome()
     {
-        return view('welcome');
+        return view('home');
     }
 
     public function login()

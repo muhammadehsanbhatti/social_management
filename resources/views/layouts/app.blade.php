@@ -20,8 +20,103 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Navbar Styles */
+        header {
+            background-color: #333;
+            color: #fff;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .logo a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-buttons a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .nav-buttons a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content Styles */
+        main {
+            position: relative;
+            height: 100vh;
+        }
+
+        .hero-image {
+            background: url('your-image-url.jpg') no-repeat center center/cover;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            margin: 0;
+        }
+
+        .hero-text p {
+            font-size: 20px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+
+
+        <header>
+            <nav>
+                <div class="container">
+                    <div class="logo">
+                        <img src="{{ asset('app-assets/logo.png') }}" alt="" width="62px" height="62px">
+                    </div>
+                    <div class="nav-buttons">
+                        <a href="#login">Login</a>
+                        <a href="#register">Register</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -73,7 +168,7 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav> --}}
 
         <main class="py-4">
             @yield('content')
