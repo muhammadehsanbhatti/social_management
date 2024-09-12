@@ -29,14 +29,14 @@
     <br>
     {{-- <button class="btn btn-primary btn-block" tabindex="2">Send reset link</button> --}}
     {{-- <button class="btn btn-primary btn-block" type="submit">Reset password</button> --}}
-    <button tabindex="4" class="btn btn-primary btn-block g-recaptcha" 
-    data-sitekey="{{ Config::get('constants.recaptcha_sitekey') }}" 
-    data-callback='onSubmit' 
+    <button tabindex="4" class="btn btn-primary btn-block g-recaptcha"
+    data-sitekey="{{ Config::get('constants.recaptcha_sitekey') }}"
+    data-callback='onSubmit'
     data-action='submit'>Reset password</button>
 </form>
 
 <p class="text-center mt-2">
-    <a href="{{ route('sp-login') }}"> <i data-feather="chevron-left"></i> Back to login </a>
+    <a href="{{ route('login') }}"> <i data-feather="chevron-left"></i> Back to login </a>
 </p>
 
 @endsection

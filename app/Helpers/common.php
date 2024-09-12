@@ -326,7 +326,7 @@ if (! function_exists('decodeShortCodesTemplate')) {
             else if ($code['title'] == '[login_url]') {
                 $search = $code['title'];
 
-                $redirect_url = url('sp-login');
+                $redirect_url = url('login');
                 $login_url = '<a class="text-primary" href="'.$redirect_url.'">'.$redirect_url.'</a>';
 
                 $replace = $order_data ? ucwords($login_url) : $search;
@@ -496,7 +496,7 @@ if (! function_exists('saveEmailLog')) {
                     $ss_replace = $userDetail ? ucwords($userDetail->first_name.' '.$userDetail->last_name) : $ss_search;
                 }
                 else if ($code['title'] == '[login_url]') {
-                    $redirect_url = url('sp-login');
+                    $redirect_url = url('login');
                     $ss_replace = ucwords('<a class="text-primary" href="'.$redirect_url.'">'.$redirect_url.'</a>');
                 }
                 else if ($code['title'] == '[app_name]') {
@@ -508,7 +508,7 @@ if (! function_exists('saveEmailLog')) {
                 else if ($code['title'] == '[email_verification_link]') {
 
                     $redirect_url = url('verify-email').'/'.$userDetail->verification_token;
-                    // $redirect_url = url('sp-login');
+                    // $redirect_url = url('login');
                     $ss_replace = ucwords('<a class="text-primary" style="border-color: #7367F0 !important; background-color: #7367F0 !important; color: #fff !important; text-decoration: none; font-size: 16px; padding: 10px 15px; border-radius: 20px; text-transform: uppercase;" href="'.$redirect_url.'">Click here to Verify</a>');
                 }
 

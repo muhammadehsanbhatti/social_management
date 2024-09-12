@@ -6,7 +6,7 @@
       <b>Email: </b>{{ $email }}<br>
       <b>Password: </b>{{ $password }}
     </p>
-      <a target="_blank" style="background: #007bff; color: white; padding: 15px; border-radius: 25px;" href="{{ route('sp-login') }}"><strong style="font-size: 18px; font-weight: 600;">CLICK HERE TO LOGIN</strong></a>
-    
+      <a target="_blank" style="background: #007bff; color: white; padding: 15px; border-radius: 25px;" href="{{ route('login') }}"><strong style="font-size: 18px; font-weight: 600;">CLICK HERE TO LOGIN</strong></a>
+
   </div>
 </div>

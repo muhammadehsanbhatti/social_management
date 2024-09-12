@@ -39,7 +39,7 @@ class UserController extends Controller
     public function register()
     {
         $role = 'User';
-        return view('auth_v1.register');
+        return view('auth_v1.register',compact('role'));
     }
     public function employee_register()
     {
@@ -87,7 +87,7 @@ class UserController extends Controller
                         'new_password' => $random_hash
                     ]);
                     \Session::flash('message', 'Your password has been changed successfully please check you email!');
-                    return redirect('/sp-login');
+                    return redirect('/login');
                 }
             }
         }
@@ -169,7 +169,7 @@ class UserController extends Controller
         ]);
         \Auth::logout();
         \Session::flash('message', 'Your password has been updated. Please log in with your new password.');
-        return redirect('/sp-login');
+        return redirect('/login');
     }
 
 
@@ -187,7 +187,7 @@ class UserController extends Controller
             \Auth::logout();
 
         }
-        return redirect('/sp-login');
+        return redirect('/login');
     }
 
 
@@ -742,14 +742,14 @@ class UserController extends Controller
                         'email_verification_link' => true
                     ]);
                     \Session::flash('message', 'You Register Successfully!. Kinldy check your email and verify your account');
-                    return redirect('/sp-login');
+                    return redirect('/login');
                 }
 
             } catch (Exception $e) {
                 \Session::flash('error_message', $e->getMessage());
                 // dd("Error: ". $e->getMessage());
             }
-            return redirect('/sp-login');
+            return redirect('/login');
         }
     }
 
@@ -771,7 +771,7 @@ class UserController extends Controller
 
                 if (!empty($model_response)) {
                     \Session::flash('message', 'Congratulations! You email is successfully verified. Welcome to ' . config('app.name'));
-                    return redirect('/sp-login');
+                    return redirect('/login');
                 }
             } else {
                 $email_data = [

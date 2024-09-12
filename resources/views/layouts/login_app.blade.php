@@ -49,8 +49,8 @@
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
- 
-    
+
+
 
    <!-- BEGIN: Content-->
    <div class="app-content content ">
@@ -65,7 +65,7 @@
                     <!-- Login v1 -->
                     <div class="card mb-0">
                         <div class="card-body">
-                            <a href="{{url('/sp-login')}}" class="brand-logo">
+                            <a href="{{url('/login')}}" class="brand-logo">
                                 {{-- <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="28">
                                     <defs>
                                         <lineargradient id="linearGradient-1" x1="100%" y1="10.5120544%" x2="50%" y2="89.4879456%">

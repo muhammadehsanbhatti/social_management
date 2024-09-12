@@ -103,6 +103,8 @@
             text-align: center;
             padding: 10px 0;
         }
+
+
     </style>
     <div id="app">
 
@@ -111,11 +113,17 @@
             <nav>
                 <div class="container">
                     <div class="logo">
-                        <img src="{{ asset('app-assets/logo.png') }}" alt="" width="62px" height="62px">
+                        <img src="{{ asset('app-assets/logo.png') }}" alt="Logo" width="62px" height="62px">
                     </div>
                     <div class="nav-buttons">
-                        <a href="#login">Login</a>
-                        <a href="#register">Register</a>
+                        <a href="{{ route('login') }}" class="btn-login">Login</a>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" id="dropdownMenuButton1">Register</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a href="{{ route('register') }}" class="dropdown-item">Register as User</a></li>
+                                <li><a href="{{ route('register') }}" class="dropdown-item">Register as Employee</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </nav>
