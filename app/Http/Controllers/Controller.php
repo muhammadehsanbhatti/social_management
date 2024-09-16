@@ -24,6 +24,7 @@ use App\Models\AssignPermission;
 use App\Models\DocumentAsset;
 use App\Models\DepositFund;
 use App\Models\TermsCondition;
+use App\Models\PrivacyPolicy;
 
 
 use DB;
@@ -53,6 +54,9 @@ class Controller extends BaseController
     public $DocumentAssetObj;
     public $DepositFundObj;
     public $TermsConditionObj;
+    public $PrivacyPolicyObj;
+
+
 
 
     public function __construct() {
@@ -72,6 +76,7 @@ class Controller extends BaseController
         $this->DocumentAssetObj = new DocumentAsset();
         $this->DepositFundObj = new DepositFund();
         $this->TermsConditionObj = new TermsCondition();
+        $this->PrivacyPolicyObj = new PrivacyPolicy();
     }
 
     /**

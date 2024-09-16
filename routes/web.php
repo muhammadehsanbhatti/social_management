@@ -10,6 +10,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DepositFundController;
 use App\Http\Controllers\TermsConditionController;
+use App\Http\Controllers\PrivacyPolicyController;
 use App\Http\Controllers\AssignPermissionController;
 use App\Http\Controllers\PaystackController;
 use App\Http\Controllers\SubMenuController;
@@ -175,5 +176,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('short_codes', EmailShortCodeController::class);
     Route::resource('deposit_fund', PaystackController::class);
     Route::resource('terms_condition', TermsConditionController::class);
+    Route::resource('privacy_policy', PrivacyPolicyController::class);
     // Route::resource('import_excel', ImportExcelFileController::class);
 });

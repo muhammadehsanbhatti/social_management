@@ -112,6 +112,17 @@ class MenuSeeder extends Seeder
                             'created_at' => now(),
                             'updated_at' => now(),
                         ],
+                        [
+                            'title' => 'Privacy Policy',
+                            'url' => '/privacy_policy',
+                            'slug' => 'privacy-policy-list',
+                            'sort_order' => 9,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'menu',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
                     ]);
 
                 } else { echo "[Menus Table is not empty]\n"; }

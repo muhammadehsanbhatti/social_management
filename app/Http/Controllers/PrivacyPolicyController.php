@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class TermsConditionController extends Controller
+class PrivacyPolicyController extends Controller
 {
+
     function __construct()
     {
         parent::__construct();
-        $this->middleware('permission:terms-condition-list|terms-condition-edit|terms-condition-delete', ['only' => ['index']]);
-        $this->middleware('permission:terms-condition-create', ['only' => ['create','store']]);
-        $this->middleware('permission:terms-condition-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:terms-condition-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:privacy-policy-list|privacy-policy-edit|privacy-policy-delete', ['only' => ['index']]);
+        $this->middleware('permission:privacy-policy-create', ['only' => ['create','store']]);
+        $this->middleware('permission:privacy-policy-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:privacy-policy-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -21,18 +22,17 @@ class TermsConditionController extends Controller
      */
     public function index(Request $request)
     {
-
         $data = array();
         $posted_data = array();
         $posted_data = $request->all();
         $posted_data['paginate'] = 10;
-        $data['terms_condition'] = $this->TermsConditionObj->getTermsCondition($posted_data);
-        $data['html'] = view('terms_condition.ajax_records', compact('data'));
+        $data['privacy_policy'] = $this->PrivacyPolicyObj->getPrivacyPolicy($posted_data);
+        $data['html'] = view('privacy_policy.ajax_records', compact('data'));
 
         if($request->ajax()){
             return $data['html'];
         }
-        return view('terms_condition.list', compact('data'));
+        return view('privacy_policy.list', compact('data'));
     }
 
     /**
@@ -42,7 +42,7 @@ class TermsConditionController extends Controller
      */
     public function create()
     {
-        return view('terms_condition.add');
+        return view('privacy_policy.add');
     }
 
     /**
@@ -66,8 +66,8 @@ class TermsConditionController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         try{
-            $this->TermsConditionObj->saveUpdateTermsCondition($posted_data);
-            \Session::flash('message', 'Terms Condition Added Successfully!');
+            $this->PrivacyPolicyObj->saveUpdatePrivacyPolicy($posted_data);
+            \Session::flash('message', 'Privacy Policy Added Successfully!');
             return redirect()->back();
 
         } catch (Exception $e) {
@@ -95,12 +95,13 @@ class TermsConditionController extends Controller
      */
     public function edit($id)
     {
+
         $posted_data = array();
         $posted_data['id'] = $id;
         $posted_data['detail'] = true;
-        $data = $this->TermsConditionObj->getTermsCondition($posted_data);
+        $data = $this->PrivacyPolicyObj->getPrivacyPolicy($posted_data);
 
-        return view('terms_condition.add',compact('data'));
+        return view('privacy_policy.add',compact('data'));
     }
 
     /**
@@ -126,8 +127,8 @@ class TermsConditionController extends Controller
         }
         try{
 
-            $this->TermsConditionObj->saveUpdateTermsCondition($posted_data);
-            \Session::flash('message', 'Terms & Condition Update Successfully!');
+            $this->PrivacyPolicyObj->saveUpdatePrivacyPolicy($posted_data);
+            \Session::flash('message', 'Privacy policy Update Successfully!');
             return redirect()->back();
 
         } catch (Exception $e) {

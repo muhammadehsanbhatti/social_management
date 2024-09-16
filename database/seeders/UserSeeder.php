@@ -124,6 +124,10 @@ class UserSeeder extends Seeder
                         'terms-condition-create',
                         'terms-condition-edit',
                         'terms-condition-delete',
+                        'privacy-policy-list',
+                        'privacy-policy-create',
+                        'privacy-policy-edit',
+                        'privacy-policy-delete',
                     ];
 
                     foreach ($permissions as $permission) {

@@ -191,6 +191,30 @@ class SubMenuSeeder extends Seeder
                             'asset_value' => 'list',
                             'created_at' => now(),
                             'updated_at' => now(),
+                        ],
+                        [
+                            'menu_id' => 9,
+                            'title' => 'Add',
+                            'url' => '/privacy_policy/create',
+                            'slug' => 'privacy-policy-create',
+                            'sort_order' => 1,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'list',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
+                        [
+                            'menu_id' => 9,
+                            'title' => 'List',
+                            'url' => '/privacy_policy',
+                            'slug' => 'privacy-policy-list',
+                            'sort_order' => 2,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'list',
+                            'created_at' => now(),
+                            'updated_at' => now(),
                         ]
                     ]);
 
