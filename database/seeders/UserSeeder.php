@@ -128,6 +128,15 @@ class UserSeeder extends Seeder
                         'privacy-policy-create',
                         'privacy-policy-edit',
                         'privacy-policy-delete',
+                        'email-template-list',
+                        'email-template-create',
+                        'email-template-edit',
+                        'email-template-delete',
+                        'email-log-list',
+                        'email-log-create',
+                        'email-log-edit',
+                        'email-log-delete',
+
                     ];
 
                     foreach ($permissions as $permission) {

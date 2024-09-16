@@ -123,6 +123,28 @@ class MenuSeeder extends Seeder
                             'created_at' => now(),
                             'updated_at' => now(),
                         ],
+                        [
+                            'title' => 'Email Template',
+                            'url' => '/email_template',
+                            'slug' => 'email-template-list',
+                            'sort_order' => 10,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'menu',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
+                        [
+                            'title' => 'Email Logs',
+                            'url' => '/email_log',
+                            'slug' => 'email-log-list',
+                            'sort_order' => 11,
+                            'status' => 'Published',
+                            'asset_type' => 'Icon',
+                            'asset_value' => 'menu',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ],
                     ]);
 
                 } else { echo "[Menus Table is not empty]\n"; }
