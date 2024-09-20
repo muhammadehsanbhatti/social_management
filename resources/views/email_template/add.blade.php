@@ -74,7 +74,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-12 col-12">
+                                    <div class="col-md-12 col-12" style="display: inline-table">
                                         <div class="form-group">
                                             <label for="last_name">Email Template</label>
                                             <select class="form-control @error('emaiil_short_codes') is-invalid @enderror"
@@ -96,12 +96,12 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
+
+                                        <div class="col-md-12 col-12">
                                             <button type="submit"
                                                 class="btn btn-primary mr-1 waves-effect waves-float waves-light">{{ isset($data->id) ? 'Update' : 'Add' }}</button>
                                         </div>
-                                    </div>
+
 
                                 </div>
                                 </form>
