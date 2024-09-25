@@ -6,6 +6,16 @@ use Illuminate\Http\Request;
 
 class EmailLogController extends Controller
 {
+
+    function __construct()
+    {
+        parent::__construct();
+        $this->middleware('permission:email-log-list|email-log-edit|email-log-delete', ['only' => ['index']]);
+        $this->middleware('permission:email-log-create', ['only' => ['create','store']]);
+        $this->middleware('permission:email-log-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:email-log-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +23,10 @@ class EmailLogController extends Controller
      */
     public function index()
     {
-        //
+        $posted_data = array();
+        $posted_data['paginate'] = 10;
+        $data = $this->EmailLogObj->getEmailLog($posted_data);
+        return view('email_log.list', compact('data'));
     }
 
     /**
@@ -23,7 +36,7 @@ class EmailLogController extends Controller
      */
     public function create()
     {
-        //
+        return view('email_log.add');
     }
 
     /**
@@ -34,7 +47,33 @@ class EmailLogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request_data = $request->all();
+        // echo '<pre>';print_r($request_data);'</pre>';exit;
+        $rules = array(
+            'subject' => 'required',
+            'send_on' => 'required',
+            'message' => 'required'
+        );
+
+        $validator = \Validator::make($request_data, $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else {
+            $email_send_on_detail = $this->EmailLogObj->getEmailLog([
+                'detail' => true,
+                'send_on' => $request_data['send_on']
+            ]);
+
+            if ($email_send_on_detail && $email_send_on_detail->send_on == $request_data['send_on']) {
+                \Session::flash('error_message', '"'.$request_data['send_on'].'" Email template already exists, if you want to update than go and edit in email template!');
+                return redirect()->back()->withInput();
+            }else{
+                \Session::flash('message', 'Email Template created successfully!');
+                $this->EmailLogObj->saveUpdateEmailLog($request_data);
+                return redirect('/email_template');
+            }
+        }
     }
 
     /**

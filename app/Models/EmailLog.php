@@ -5,22 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EmailLogs extends Model
+class EmailLog extends Model
 {
     use HasFactory;
 
-    
+
     public function getEmailMessageAttribute($value){
         return decrypt($value);
     }
-    
+
     public function setEmailMessageAttribute($value){
         $this->attributes['email_message'] = encrypt($value);
     }
 
-    public function getEmailLogs($posted_data = array())
+    public function getEmailLog($posted_data = array())
     {
-        $query = EmailLogs::latest();
+        $query = EmailLog::latest();
 
         if (isset($posted_data['id'])) {
             $query = $query->where('email_logs.id', $posted_data['id']);
@@ -54,7 +54,7 @@ class EmailLogs extends Model
                 $result = $query->get();
             }
         }
-        
+
         if(isset($posted_data['printsql'])){
             $result = $query->toSql();
             echo '<pre>';
@@ -65,12 +65,12 @@ class EmailLogs extends Model
         return $result;
     }
 
-    public function saveUpdateEmailLogs($posted_data = array(), $where_posted_data = array())
+    public function saveUpdateEmailLog($posted_data = array(), $where_posted_data = array())
     {
         if (isset($posted_data['update_id'])) {
-            $data = EmailLogs::find($posted_data['update_id']);
+            $data = EmailLog::find($posted_data['update_id']);
         } else {
-            $data = new EmailLogs;
+            $data = new EmailLog;
         }
 
         if (isset($posted_data['email_subject']) && !$posted_data['email_subject']) {
@@ -90,7 +90,7 @@ class EmailLogs extends Model
                 return false;
             }
         }
-        
+
         if (isset($posted_data['user_id'])) {
             $data->user_id = $posted_data['user_id'];
         }
@@ -128,7 +128,7 @@ class EmailLogs extends Model
         }
 
         $data->save();
-        $data = EmailLogs::getEmailLogs([
+        $data = EmailLog::getEmailLog([
             'detail' => true,
             'id' => $data->id,
         ]);
@@ -137,14 +137,14 @@ class EmailLogs extends Model
 
 
 
-    public function deleteEmailLogs($id = 0, $where_posted_data = array())
+    public function deleteEmailLog($id = 0, $where_posted_data = array())
     {
         $is_deleted = false;
         if($id>0){
             $is_deleted = true;
-            $data = EmailLogs::find($id);
+            $data = EmailLog::find($id);
         }else{
-            $data = EmailLogs::latest();
+            $data = EmailLog::latest();
         }
 
         if(isset($where_posted_data) && count($where_posted_data)>0){
@@ -153,7 +153,7 @@ class EmailLogs extends Model
                 $data = $data->where('email_status', $where_posted_data['email_status']);
             }
         }
-        
+
         if($is_deleted){
             return $data->delete();
         }else{

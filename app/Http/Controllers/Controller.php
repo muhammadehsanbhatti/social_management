@@ -25,6 +25,8 @@ use App\Models\DocumentAsset;
 use App\Models\DepositFund;
 use App\Models\TermsCondition;
 use App\Models\PrivacyPolicy;
+use App\Models\EmailLog;
+
 
 
 use DB;
@@ -55,6 +57,8 @@ class Controller extends BaseController
     public $DepositFundObj;
     public $TermsConditionObj;
     public $PrivacyPolicyObj;
+    public $EmailLogObj;
+
 
 
 
@@ -77,6 +81,7 @@ class Controller extends BaseController
         $this->DepositFundObj = new DepositFund();
         $this->TermsConditionObj = new TermsCondition();
         $this->PrivacyPolicyObj = new PrivacyPolicy();
+        $this->EmailLogObj = new EmailLog();
     }
 
     /**
