@@ -25,7 +25,7 @@ class EmailLogController extends Controller
     {
         $posted_data = array();
         $posted_data['paginate'] = 10;
-        $data = $this->EmailLogObj->getEmailLog($posted_data);
+        $data = $this->EmailObj->getEmailLogs($posted_data);
         return view('email_log.list', compact('data'));
     }
 
@@ -60,7 +60,7 @@ class EmailLogController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
-            $email_send_on_detail = $this->EmailLogObj->getEmailLog([
+            $email_send_on_detail = $this->EmailObj->getEmailLogs([
                 'detail' => true,
                 'send_on' => $request_data['send_on']
             ]);
@@ -70,7 +70,7 @@ class EmailLogController extends Controller
                 return redirect()->back()->withInput();
             }else{
                 \Session::flash('message', 'Email Template created successfully!');
-                $this->EmailLogObj->saveUpdateEmailLog($request_data);
+                $this->EmailObj->saveUpdateEmailLog($request_data);
                 return redirect('/email_template');
             }
         }

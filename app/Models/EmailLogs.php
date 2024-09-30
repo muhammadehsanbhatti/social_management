@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EmailLog extends Model
+class EmailLogs extends Model
 {
     use HasFactory;
 
@@ -18,9 +18,9 @@ class EmailLog extends Model
         $this->attributes['email_message'] = encrypt($value);
     }
 
-    public function getEmailLog($posted_data = array())
+    public function getEmailLogs($posted_data = array())
     {
-        $query = EmailLog::latest();
+        $query = EmailLogs::latest();
 
         if (isset($posted_data['id'])) {
             $query = $query->where('email_logs.id', $posted_data['id']);
@@ -65,12 +65,12 @@ class EmailLog extends Model
         return $result;
     }
 
-    public function saveUpdateEmailLog($posted_data = array(), $where_posted_data = array())
+    public function saveUpdateEmailLogs($posted_data = array(), $where_posted_data = array())
     {
         if (isset($posted_data['update_id'])) {
-            $data = EmailLog::find($posted_data['update_id']);
+            $data = EmailLogs::find($posted_data['update_id']);
         } else {
-            $data = new EmailLog;
+            $data = new EmailLogs;
         }
 
         if (isset($posted_data['email_subject']) && !$posted_data['email_subject']) {
@@ -128,7 +128,7 @@ class EmailLog extends Model
         }
 
         $data->save();
-        $data = EmailLog::getEmailLog([
+        $data = EmailLogs::getEmailLogs([
             'detail' => true,
             'id' => $data->id,
         ]);
@@ -137,14 +137,14 @@ class EmailLog extends Model
 
 
 
-    public function deleteEmailLog($id = 0, $where_posted_data = array())
+    public function deleteEmailLogs($id = 0, $where_posted_data = array())
     {
         $is_deleted = false;
         if($id>0){
             $is_deleted = true;
-            $data = EmailLog::find($id);
+            $data = EmailLogs::find($id);
         }else{
-            $data = EmailLog::latest();
+            $data = EmailLogs::latest();
         }
 
         if(isset($where_posted_data) && count($where_posted_data)>0){

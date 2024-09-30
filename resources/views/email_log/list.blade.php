@@ -21,8 +21,11 @@
                 <thead>
                     <tr>
                         <th>Sr #</th>
-                        <th>Email subject</th>
-                        <th>Email send on</th>
+                        <th>User Name</th>
+                        <th>User Email</th>
+                        <th>Email Subject</th>
+                        <th>Email Status</th>
+                        <th>Send Email After</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -41,11 +44,14 @@
                             @endphp
                             <tr>
                                 <td>{{ $sr_no }}</td>
-                                <td>{{ $item['subject'] }}</td>
-                                <td>Send on "{{ $item['send_on'] }}"</td>
-                               
+                                <td>{{ $item['user_id'] }}</td>
+                                <td>{{ $item['email'] }}</td>
+                                <td>{{ $item['email_subject'] }}</td>
+                                <td>{{ $item['email_status'] }}</td>
+                                <td>{{ $item['send_email_after'] }}</td>
+
                                 <td>
-                                    @canany(['email-template-edit', 'email-template-delete'])
+                                    @canany(['email-log-edit', 'email-log-delete'])
                                     <div class="dropdown">
                                         <button type="button" class="btn btn-sm dropdown-toggle hide-arrow waves-effect waves-float waves-light" data-toggle="dropdown">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
@@ -56,7 +62,7 @@
                                         </button>
                                         @php $any_permission_found = true; @endphp
                                         <div class="dropdown-menu">
-                                            @can('email-template-edit')
+                                            @can('email-log-edit')
                                             <a class="dropdown-item" href="{{ url('email_template')}}/{{$item['id']}}/edit" >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 mr-50">
                                                     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
@@ -65,7 +71,7 @@
                                             </a>
                                             @endcan
 
-                                            @can('email-template-delete')
+                                            @can('email-log-delete')
                                             <form action="{{ url('email_template/'.$item['id']) }}" method="post">
                                                 @method('delete')
                                                 @csrf
