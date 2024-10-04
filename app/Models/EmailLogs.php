@@ -10,6 +10,11 @@ class EmailLogs extends Model
     use HasFactory;
 
 
+    public function userDetails()
+    {
+        return $this->belongsTo(User::class, 'user_id')
+            ->select(['id', 'role', 'first_name', 'last_name', 'email', 'profile_image']);
+    }
     public function getEmailMessageAttribute($value){
         return decrypt($value);
     }
@@ -20,7 +25,8 @@ class EmailLogs extends Model
 
     public function getEmailLogs($posted_data = array())
     {
-        $query = EmailLogs::latest();
+        $query = EmailLogs::latest()
+                ->with('userDetails');
 
         if (isset($posted_data['id'])) {
             $query = $query->where('email_logs.id', $posted_data['id']);

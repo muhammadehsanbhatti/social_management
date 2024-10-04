@@ -58,7 +58,7 @@
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="description">Enter terms condition description</label>
-                                            <textarea class="form-control @error('description') is-invalid @enderror" name="description"  rows="5" id="placeOfDeath" value="{{old('description', isset($data->description)? $data->description: '')}}"  placeholder="Enter course short description here">{!! (isset($data->description)? $data->description: '') !!}</textarea>
+                                            <textarea class="form-control @error('description') is-invalid @enderror" name="description"  rows="5" id="placeOfDeath" value="{{old('description', isset($data->description)? $data->description: '')}}"  placeholder="Enter terms condition description here">{!! (isset($data->description)? $data->description: '') !!}</textarea>
                                             @error('description')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

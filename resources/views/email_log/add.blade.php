@@ -29,12 +29,12 @@
 
                                 @if (isset($data->id))
                                     <form class="form" id="email_msg_form"
-                                        action="{{ route('email_template.update', $data->id) }}" method="post"
+                                        action="{{ route('email_log.update', $data->id) }}" method="post"
                                         enctype="multipart/form-data">
                                         @method('PUT')
                                     @else
                                         <form class="form" id="email_msg_form"
-                                            action="{{ route('email_template.store') }}" method="POST"
+                                            action="{{ route('email_log.store') }}" method="POST"
                                             enctype="multipart/form-data">
                                 @endif
                                 @csrf

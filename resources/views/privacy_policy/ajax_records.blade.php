@@ -104,83 +104,31 @@
                     </td>
                 </tr>
                 <div class="modal fade" id="privacy_policy-{{ $item->id }}" tabindex="-1"
-                    aria-labelledby="userDetailModalLabel-{{ $item->id }}" aria-hidden="true">
+                    aria-labelledby="privacyPolicyModalLabel-{{ $item->id }}" aria-hidden="true">
                     <div class="modal-dialog   modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="userDetailModalLabel">User Details</h5>
+                                <h5 class="modal-title" id="privacyPolicyModalLabel">Privacy policy detail</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <!-- Content will be loaded here dynamically -->
-                                <div id="userDetailContent-{{ $item->id }}">
+                                <div id="privacyPolicyContent-{{ $item->id }}">
                                     @if ($item->role == 'User')
-                                        <div class="user_detail">
-                                            <div class="user_detail_heading pt-2 pb-2" style="text-align: center;">
-                                                <h4
-                                                    style="display: inline-block; border: 2px solid #be97ff; border-radius: 4px; padding: 10px;margin: 0;">
-                                                    User Detail</h4>
-                                            </div>
+                                        <div class="privacy_policy_detail">
+
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="user_info_div mb-2">
-                                                        <h4>User First Name</h4>
-                                                        <span>{{ $item->first_name }}</span>
+                                                        <h4>Privacy Title</h4>
+                                                        <span>{{ $item->title }}</span>
                                                     </div>
                                                     <div class="user_info_div mb-2">
-                                                        <h4>User Last Name</h4>
-                                                        <span>{{ $item->last_name }}</span>
+                                                        <h4>Privacy Policy Description</h4>
+                                                        <span>{{ $item->description }}</span>
                                                     </div>
 
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="user_info_div mb-2">
-                                                        <h4>Email</h4>
-                                                        <span>{{ $item->email }}</span>
-                                                    </div>
-                                                    <div class="user_info_div mb-2">
-                                                        <h4>Phone</h4>
-                                                        <span>{{ $item->phone_number }}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="user_info_div mb-2">
-                                                        <h4>DOB</h4>
-                                                        <span>{{ $item->dob }}</span>
-                                                    </div>
-                                                    <div class="user_info_div mb-2">
-                                                        <h4>Status</h4>
-                                                        <span>{{ $item->user_status }}</span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="user_info_div mb-2">
-                                                        <h4>Email Verified At</h4>
-                                                        <span>{{ $item->email_verified_at }}</span>
-                                                    </div>
-                                                    <div class="user_info_div mb-2">
-                                                        <h4>User last login</h4>
-                                                        <span>{{ $item->last_seen }}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="user_info_div mb-2">
-                                                        <h4>Role</h4>
-                                                        <span>{{ $item->role }}</span>
-                                                    </div>
-                                                    <div class="user_info_div mb-2">
-                                                        <h4>Register From</h4>
-                                                        <span>{{ $item->register_from }}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="user_info_div mb-2">
-                                                        <h4>Country</h4>
-                                                        <span>{{ $item->country }}</span>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

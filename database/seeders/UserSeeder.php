@@ -135,6 +135,7 @@ class UserSeeder extends Seeder
                         'email-log-list',
                         'email-log-create',
                         'email-log-edit',
+                        'email-log-detail',
                         'email-log-delete',
 
                     ];

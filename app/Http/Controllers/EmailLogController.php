@@ -21,11 +21,18 @@ class EmailLogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posted_data = array();
+        $posted_data = $request->all();
+        $posted_data['orderBy_name'] = 'email_logs.id';
+        $posted_data['orderBy_value'] = 'DESC';
         $posted_data['paginate'] = 10;
-        $data = $this->EmailObj->getEmailLogs($posted_data);
+        $data['email_log'] = $this->EmailObj->getEmailLogs($posted_data);
+        $data['html'] = view('email_log.ajax_records', compact('data'));
+
+        if($request->ajax()){
+            return $data['html'];
+        }
         return view('email_log.list', compact('data'));
     }
 

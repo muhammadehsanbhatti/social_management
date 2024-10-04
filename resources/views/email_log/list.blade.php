@@ -1,4 +1,4 @@
-@section('title', 'Email Template List')
+@section('title', 'Email Logs List')
 @extends('layouts.master_dashboard')
 
 @section('content')
@@ -8,6 +8,60 @@
 
     </div>
     <div class="content-body">
+
+        <!-- Select2 Start  -->
+        <section class="basic-select2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Filter Email Logs</h4>
+                        </div>
+
+                        <div class="card-body">
+                            {{-- <form method="GET" id="filterForm" action="{{ url('/user') }}">
+                                @csrf
+                                <input name="page" id="filterPage" value="1" type="hidden">
+                                <div class="row">
+                                    <div class="col-md-3 mb-1">
+                                        <label class="form-label" for="select2-search">Search</label>
+                                        <input value="" type="text" id="search" placeholder="Search term"  class="formFilter form-control" name="search">
+                                    </div>
+                                    <div class="col-md-3 mb-1">
+                                        <label class="form-label" for="select2-roles">Roles</label>
+                                        <select class="formFilter select2 form-select" name="roles" id="select2-roles">
+                                            <option value=""> ---- Choose Role ---- </option>
+                                            @foreach ($data['all_roles'] as $key => $role_obj)
+                                                <option value="{{$role_obj['name']}}">{{$role_obj['name']}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-1">
+                                        <label class="form-label" for="select2-account-status">Account Status</label>
+                                        <select class="formFilter select2 form-select" name="user_status" id="select2-account-status">
+                                            <option value=""> ---- Choose Status ---- </option>
+                                            @foreach (Config::get('constants.statusActiveBlock') as $key => $item)
+                                                <option value="{{ $key }}">{{ $item }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-1">
+                                        <label class="form-label" for="orderBy_value">Sort By Value</label>
+                                        <select class="formFilter select2 form-select" name="orderBy_value" id="orderBy_value">
+                                            <option value=""> ---- Choose an option ---- </option>
+                                            <option value="ASC">ASC</option>
+                                            <option value="DESC">DESC</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form> --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Select2 End -->
+
         @if (Session::has('message'))
             <div class="alert alert-success"><b>Success: </b>{{ Session::get('message') }}</div>
         @endif
@@ -15,96 +69,10 @@
             <div class="alert alert-danger"><b>Sorry: </b>{{ Session::get('error_message') }}</div>
         @endif
 
-
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Sr #</th>
-                        <th>User Name</th>
-                        <th>User Email</th>
-                        <th>Email Subject</th>
-                        <th>Email Status</th>
-                        <th>Send Email After</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @if (isset($data) && count($data)>0)
-
-                        @php $any_permission_found = false; @endphp
-                        @foreach ($data as $key=>$item)
-                            @php
-                                $sr_no = $key + 1;
-                                if ($data->currentPage()>1) {
-                                    $sr_no = ($data->currentPage()-1)*$data->perPage();
-                                    $sr_no = $sr_no + $key + 1;
-                                }
-                            @endphp
-                            <tr>
-                                <td>{{ $sr_no }}</td>
-                                <td>{{ $item['user_id'] }}</td>
-                                <td>{{ $item['email'] }}</td>
-                                <td>{{ $item['email_subject'] }}</td>
-                                <td>{{ $item['email_status'] }}</td>
-                                <td>{{ $item['send_email_after'] }}</td>
-
-                                <td>
-                                    @canany(['email-log-edit', 'email-log-delete'])
-                                    <div class="dropdown">
-                                        <button type="button" class="btn btn-sm dropdown-toggle hide-arrow waves-effect waves-float waves-light" data-toggle="dropdown">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
-                                                <circle cx="12" cy="12" r="1"></circle>
-                                                <circle cx="12" cy="5" r="1"></circle>
-                                                <circle cx="12" cy="19" r="1"></circle>
-                                            </svg>
-                                        </button>
-                                        @php $any_permission_found = true; @endphp
-                                        <div class="dropdown-menu">
-                                            @can('email-log-edit')
-                                            <a class="dropdown-item" href="{{ url('email_template')}}/{{$item['id']}}/edit" >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 mr-50">
-                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                                </svg>
-                                                <span>Edit</span>
-                                            </a>
-                                            @endcan
-
-                                            @can('email-log-delete')
-                                            <form action="{{ url('email_template/'.$item['id']) }}" method="post">
-                                                @method('delete')
-                                                @csrf
-                                                <button class="dropdown-item" id="delButton" type="submit" style="width: 100%">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash mr-50">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                                    </svg>
-                                                    <span>Delete</span>
-
-                                                </button>
-                                            </form>
-                                            @endcan
-                                        </div>
-                                    @endcanany
-                                    @if (!$any_permission_found)
-                                        {{ 'Not Available' }}
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-
-                    @endif
-                </tbody>
-            </table>
-            @if (isset($data) && count($data)>0)
-                {{ $data->links('vendor.pagination.bootstrap-4') }}
-            @else
-                <div class="alert alert-primary">Don't have records!</div>
-            @endif
-
+        <div id="table_data">
+            {{ $data['html'] }}
         </div>
+
     </div>
 </div>
-
 @endsection
